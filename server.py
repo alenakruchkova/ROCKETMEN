@@ -1,12 +1,15 @@
 """Rocketmen"""
+
 from datetime import datetime
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, jsonify, json
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Astronaut, Country
+
+import requests
 
 app = Flask(__name__)
 
@@ -16,12 +19,41 @@ app.secret_key = "ABC"
 #  (otherwise Jinja fails scilently)
 app.jinja_env.undefined = StrictUndefined
 
+############################################################################
 
 @app.route('/')
+def get_seed_info():
+    """Show landing page"""
+
+    return render_template("index.html")
+
+
+@app.route('/home')
 def index():
     """Homepage."""
 
-    return render_template("home.html")
+    jdict = requests.get("http://api.open-notify.org/astros.json")
+    jdict = jdict.json()
+
+    num_result = jdict['number']
+
+    name_list = []
+    for i in range(len(jdict['people'])):
+        name_list.append(jdict['people'][i]['name'])
+
+    return render_template("home.html",
+                            num_result=num_result,
+                            name_list=name_list)
+
+
+@app.route('/astros.json')
+def astronauts_info():
+    """JSON info about people in space right now."""
+
+    jdict = requests.get("http://api.open-notify.org/astros.json")
+    jdict = jdict.json()
+
+    return jsonify(jdict)
 
 
 @app.route("/astronauts/<int:astronaut_id>")
@@ -69,6 +101,7 @@ def show_astronaut_info(astronaut_id):
                             flag=flag,
                             days=days)
 
+#########################################################################
 
 if __name__ == "__main__":
     # debug=True , since it has to be True at the point

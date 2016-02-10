@@ -2,43 +2,21 @@
 {% block title %}ROCKETMEN home{% endblock %}
 {% block content %}
 
-<h1><b>6</b></h1>
+<h1><b>{{ num_result }}</b></h1>
 
 
-<form action= "/astronauts/<int:astronaut_id>" method="GET">
+<form action= "/astronauts/1" method="GET">
   	<input type="submit" value="SCOTT KELLY">
 </form>
 
 
-  <p>
-    Mikhail Kornienko<br>
-    Russia<br> 
-    318 days
-  </p>
-  <p>
-    Sergey Volkov<br>
-    Russia<br> 
-    159 days
-  </p>
-  <p>
-    Tim Kopra<br>
-    USA<br> 
-    55 days
-  </p>
-  <p>
-    Tim Peake<br>
-    UK<br> 
-    55 days
-  </p>
-  <p>
-    Yuri Malenchenko<br>
-    Russia<br> 
-    55 days
-  </p>
-
-
-
-
+<table>
+  {% for name in name_list %}
+  <tr>
+    <td>{{ name }}</td>
+  </tr>
+  {% endfor %}
+</table>
 
 
 {% endblock %}
