@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<img src={{ photo }}>
+
+<p><h1><b>{{ name }}</b></h1></p>
+<img src={{ flag }}>
+<p><h3>{{ days }} days</h3></p>
+
+<p>Comepleted flights: {{ num_completed_flights }}</p>
+<p>Duration of completed flights: {{ duration_completed_flights }}</p>
+<p>Total EVAs: {{ num_evas }}</p>
+<p>Total EVA time: {{ duration_evas }}</p>
+
+<p>Instagram: @{{ instagram }}</p>
+
+
+{% endblock %}
