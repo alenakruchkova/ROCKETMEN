@@ -2,21 +2,22 @@
 {% block title %}ROCKETMEN home{% endblock %}
 {% block content %}
 
+	<!-- Nav to home page -->
+
 <h1><b>{{ num_result }}</b></h1>
 
-
-<form action= "/astronauts/1" method="GET">
-  	<input type="submit" value="SCOTT KELLY">
-</form>
-
-
-<table>
-  {% for name in name_list %}
-  <tr>
-    <td>{{ name }}</td>
-  </tr>
-  {% endfor %}
-</table>
-
+<ul>
+	{% for name in name_id %}
+		<li>
+			{% if name_id[name] %}
+				<a href="astronauts/{{ name_id[name] }}">
+					{{ name }}
+				</a>
+			{% else %}
+				{{ name }}
+			{% endif %}
+		</li>
+	{% endfor %}
+</ul>
 
 {% endblock %}

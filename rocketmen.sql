@@ -4,14 +4,14 @@ CREATE TABLE Countries (
     flag VARCHAR(400) NOT NULL
     );
 
-INSERT INTO Countries (country_id, name, flag)
-	VALUES ('RU', 'Russian Federation', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/220px-Flag_of_Russia.svg.png');
+-- INSERT INTO Countries (country_id, name, flag)
+-- 	VALUES ('RU', 'Russian Federation', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/220px-Flag_of_Russia.svg.png');
 
-INSERT INTO Countries (country_id, name, flag)
-	VALUES ('GB', 'United Kingdom', 'https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/220px-Flag_of_the_United_Kingdom.svg.png');
+-- INSERT INTO Countries (country_id, name, flag)
+-- 	VALUES ('GB', 'United Kingdom', 'https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/220px-Flag_of_the_United_Kingdom.svg.png');
 
-INSERT INTO Countries (country_id, name, flag)
-	VALUES ('US', 'United States', 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/220px-Flag_of_the_United_States.svg.png');
+-- INSERT INTO Countries (country_id, name, flag)
+-- 	VALUES ('US', 'United States', 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/220px-Flag_of_the_United_States.svg.png');
 
 CREATE TABLE Astronauts(
 	-- astonaut_id INTEGER AUTO_INCREMENT PRIMARY KEY,

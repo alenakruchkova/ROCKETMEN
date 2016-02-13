@@ -19,7 +19,7 @@ class Country(db.Model):
 
     country_id = db.Column(db.String(2), primary_key=True)
     name = db.Column(db.String(35), nullable=False)
-    flag = db.Column(db.String(400), nullable=False)
+    flag = db.Column(db.String(400), nullable=True)
 
     #Define relationship to astronaut
     astronaut = db.relationship("Astronaut", backref=db.backref("countries"))
@@ -62,8 +62,8 @@ class Astronaut(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Astronaut %s/%s name=%s>" % (
-            self.astonaut_id, self.num_for_country, self.name)
+        return "<Astronaut astronaut_id=%s name=%s>" % (
+            self.astronaut_id, self.name)
 
 
 ##############################################################################
@@ -79,7 +79,7 @@ def connect_to_db(app):
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
+    # If we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
     from server import app

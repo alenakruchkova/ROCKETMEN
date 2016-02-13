@@ -1,18 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<img src={{ photo }}>
-
+<div>
+	{% if photo %}
+		<img src={{ photo }}>
+	{% endif %}
+</div>
 <p><h1><b>{{ name }}</b></h1></p>
-<img src={{ flag }}>
-<p><h3>{{ days }} days</h3></p>
+<div>
+	{% if flag %}
+		<img src={{ flag }}>
+	{% endif %}
+</div>
+<p>
+	{% if days %}
+		<h3>{{ days }} days</h3>
+	{% endif %}
+</p>
 
-<p>Comepleted flights: {{ num_completed_flights }}</p>
-<p>Duration of completed flights: {{ duration_completed_flights }}</p>
-<p>Total EVAs: {{ num_evas }}</p>
-<p>Total EVA time: {{ duration_evas }}</p>
+<p>
+	{% if num_completed_flights %}
+		Comepleted flights: {{ num_completed_flights }}
+	{% endif %}
+</p>
+<p>
+	{% if duration_completed_flights %}
+		Duration of completed flights: {{ duration_completed_flights }}
+	{% endif %}
+</p>
+<p>
+	{% if num_evas %}
+		Total EVAs: {{ num_evas }}
+	{% endif %}
+</p>
+<p>
+	{% if duration_evas %}
+		Total EVA time: {{ duration_evas }}
+	{% endif %}
+</p>
 
-<p>Instagram: @{{ instagram }}</p>
+<p>
+	{% if instagram %}   
+		Instagram: @{{ instagram }}
+	{% endif %}
+</p>
 
 
 {% endblock %}
+
+<script>
+
+</script>

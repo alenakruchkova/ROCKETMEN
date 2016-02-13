@@ -31,19 +31,34 @@ def get_seed_info():
 @app.route('/home')
 def index():
     """Homepage."""
-
+    # Get data from API
     jdict = requests.get("http://api.open-notify.org/astros.json")
     jdict = jdict.json()
 
+    # Number of people in space
     num_result = jdict['number']
 
-    name_list = []
-    for i in range(len(jdict['people'])):
-        name_list.append(jdict['people'][i]['name'])
+    # Dictionary with name-id key-value pairs
+    name_id = {}
+
+    # List of names of people in space
+
+    name_list = [p['name'] for p in jdict['people']]
+    name_id = [{p['name']: None} for p in jdict['people']]
+
+    # Get astronaut ids by name:
+    for name in name_list:
+        astronaut_obj = db.session.query(Astronaut).filter(Astronaut.name == name).first()
+        if astronaut_obj:
+            astronaut_id = astronaut_obj.astronaut_id
+            name_id[name] = astronaut_id
+
+    # astronaut_obj_list = db.session.query(Astronaut).filter(Astronaut.name in name_list).all()
+
 
     return render_template("home.html",
                             num_result=num_result,
-                            name_list=name_list)
+                            name_id=name_id)
 
 
 @app.route('/astros.json')
@@ -53,6 +68,7 @@ def astronauts_info():
     jdict = requests.get("http://api.open-notify.org/astros.json")
     jdict = jdict.json()
 
+
     return jsonify(jdict)
 
 
@@ -61,6 +77,9 @@ def show_astronaut_info(astronaut_id):
     """Show information about the astronaut"""
 
     astronaut = Astronaut.query.filter(Astronaut.astronaut_id == astronaut_id).one()
+
+    # astronaut.flag = astronaut.countries.flag
+    # astronaut.days = 3
 
     photo = astronaut.photo
     name = astronaut.name
@@ -90,7 +109,8 @@ def show_astronaut_info(astronaut_id):
 
     days = current_flight_duration()
 
-    return render_template("astronaut.html",
+    return render_template("astronaut.html", #**astronaut.__dict__)
+    
                             photo=photo,
                             name=name,
                             num_completed_flights=num_completed_flights,
