@@ -20,19 +20,19 @@ def load_countries():
     Country.query.delete()
 
     # Read countries.csv file and insert data
-    for row in open("seed_data/iso_3166_2_countries.csv"):
+    for row in open("seed_data/output.txt"):
+        r = row.splitlines()
 
-        result = row.split("|")
-        print result
-        # name, country_id =  row.split(",")
+    for rn in r:
+        name, country_id = rn.split(",")
 
-    #     country = Country(name=name, country_id=country_id)
+        country = Country(name=name, country_id=country_id)
 
-    #     # Add to the session
-    #     db.session.add(country)
+    # Add to the session
+        db.session.add(country)
 
-    # # Commit
-    # db.session.commit()
+    # Commit
+    db.session.commit()
 
 
 #####################################################################

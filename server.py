@@ -42,9 +42,14 @@ def index():
     name_id = {}
 
     # List of names of people in space
+    name_list = []
+    for i in range(len(jdict['people'])):
+        name = jdict['people'][i]['name']
+        name_list.append(name)
+        name_id[name] = None
 
-    name_list = [p['name'] for p in jdict['people']]
-    name_id = [{p['name']: None} for p in jdict['people']]
+    # name_list = [p['name'] for p in jdict['people']]
+    # name_id = [{p['name']: None} for p in jdict['people']]
 
     # Get astronaut ids by name:
     for name in name_list:

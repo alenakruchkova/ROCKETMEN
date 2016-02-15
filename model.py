@@ -17,8 +17,8 @@ class Country(db.Model):
 
     __tablename__ = "countries"
 
-    country_id = db.Column(db.String(2), primary_key=True)
-    name = db.Column(db.String(35), nullable=False)
+    country_id = db.Column(db.String(10), primary_key=True)
+    name = db.Column(db.String(300), nullable=False)
     flag = db.Column(db.String(400), nullable=True)
 
     #Define relationship to astronaut
