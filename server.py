@@ -11,6 +11,8 @@ from model import connect_to_db, db, Astronaut, Country
 
 import requests
 
+from BeautifulSoup import BeautifulSoup
+
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
