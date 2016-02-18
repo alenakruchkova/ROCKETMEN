@@ -4,22 +4,37 @@ UPDATE Countries SET flag='https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/
 
 UPDATE Countries SET flag='https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/220px-Flag_of_the_United_States.svg.png' WHERE country_id='US';
 
+INSERT INTO Countries (country_id, name, flag)
+	VALUES ('SU', 'USSR','https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_Soviet_Union.svg/220px-Flag_of_the_Soviet_Union.svg.png');
 
-INSERT INTO Astronauts (name, gender, dob, status, country_id, 
-						current_flight_start, first_flight_start, num_completed_flights, 
-						duration_completed_flights,
-						num_evas, duration_evas, photo, instagram)
-	VALUES ('Scott Kelly', 'M', '1964.02.21',
-			'Active','US', '2015.03.27', '1999.12.20',4, 
-			'180 days 01 h 49 min 26 sec', 3, '18 h 20 min',
-			'http://www.astronaut.ru/flights/foto/iss25/kelly.jpg', 
-			'stationcdrkelly');
+UPDATE Astronauts SET dob='1964.02.21', status='Active', country_id='US', 
+						current_flight_start='2015.03.27', num_completed_flights=4, 
+						duration_completed_flights='180 days 01 h 49 min 26 sec',
+						num_evas=3, duration_evas='18 h 20 min', photo='http://www.astronaut.ru/flights/foto/iss25/kelly.jpg',
+						instagram='stationcdrkelly' 
+						WHERE name='Scott Kelly';
 
-INSERT INTO Astronauts (name, gender, dob, status, country_id, 
-						current_flight_start, first_flight_start, num_completed_flights, 
-						duration_completed_flights,
-						num_evas, duration_evas, photo)
-	VALUES ('Mikhail Kornienko', 'M', '1960.04.15',
-			'Active','RU', '2015.03.27', '2010.04.02', 1, 
-			'176 days 01 h 18 min 13 sec', 2, '12 h 17 min',
-			'http://www.astronaut.ru/flights/foto/iss43/kornienko.jpg');
+UPDATE Astronauts SET name='Mikhail Kornienko', dob='1960.04.15', status='Active', country_id='RU', 
+						current_flight_start='2015.03.27', num_completed_flights=1, 
+						duration_completed_flights='176 days 01 h 18 min 13 sec',
+						num_evas=2, duration_evas='12 h 17 min', 
+						photo='http://www.astronaut.ru/flights/foto/iss43/kornienko.jpg' 
+						WHERE name='Mikhail Korniyenko';
+
+UPDATE Astronauts SET name='Timothy Peake',country_id='GB', current_flight_start='2015.12.15',
+						instagram='astro_timpeake',
+						photo='http://www.astronaut.ru/flights/foto/iss46/peake.jpg' 
+						WHERE name='Tim Peake';
+
+UPDATE Astronauts SET country_id='US', current_flight_start='2015.12.15',
+						photo='http://www.astronaut.ru/flights/foto/iss46/kopra.jpg'
+				 		WHERE name='Timothy Kopra';
+
+UPDATE Astronauts SET country_id='RU', current_flight_start='2015.09.02',
+						instagram='volkov_iss',
+						photo='http://www.astronaut.ru/as_rusia/vvs/foto/volkov2.jpg' 
+						WHERE name='Sergey Volkov';
+
+UPDATE Astronauts SET country_id='RU', current_flight_start='2015.12.15',
+						photo='http://www.astronaut.ru/as_rusia/vvs/foto/malenchenko2.jpg' 
+						WHERE name='Yuri Malenchenko';

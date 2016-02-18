@@ -11,7 +11,7 @@ from model import connect_to_db, db, Astronaut, Country
 
 import requests
 
-from BeautifulSoup import BeautifulSoup
+
 
 app = Flask(__name__)
 
@@ -37,36 +37,65 @@ def index():
     jdict = requests.get("http://api.open-notify.org/astros.json")
     jdict = jdict.json()
 
-    # Number of people in space
+    # Number of people in space from JSON data
     num_result = jdict['number']
 
-    # Dictionary with name-id key-value pairs
-    name_id = {}
+    # COLLECT list of names like ["Michael Kornienko", "Sergey Vokov",...] from JSON data
+    name_list = [p['name'] for p in jdict['people']]
 
-    # List of names of people in space
-    name_list = []
-    for i in range(len(jdict['people'])):
-        name = jdict['people'][i]['name']
-        name_list.append(name)
-        name_id[name] = None
+    #DB astronauts table query for names in name_list
+    list_astro_obj = db.session.query(Astronaut).filter(Astronaut.name.in_(name_list)).all()
 
-    # name_list = [p['name'] for p in jdict['people']]
-    # name_id = [{p['name']: None} for p in jdict['people']]
+    def lookup_id_from_name(name):
+        """Returns id corresponding to given astronaut's name"""
 
-    # Get astronaut ids by name:
-    for name in name_list:
-        astronaut_obj = db.session.query(Astronaut).filter(Astronaut.name == name).first()
-        if astronaut_obj:
-            astronaut_id = astronaut_obj.astronaut_id
-            name_id[name] = astronaut_id
+        for astronaut in list_astro_obj:
+            if astronaut.name == name:
+                return astronaut.astronaut_id
+        return None
 
-    # astronaut_obj_list = db.session.query(Astronaut).filter(Astronaut.name in name_list).all()
-
+    name_id = {name: lookup_id_from_name(name) for name in name_list}
 
     return render_template("home.html",
                             num_result=num_result,
                             name_id=name_id)
 
+
+@app.route("/astronauts/<int:astronaut_id>")
+def show_astronaut_info(astronaut_id):
+    """Show information about the astronaut"""
+
+    #Query astronauts table on astronaut_id
+    astronaut = Astronaut.query.filter(Astronaut.astronaut_id == astronaut_id).one()
+
+    #From countries table get corresponding flag
+    country = astronaut.countries
+    flag = country.flag
+
+    def current_flight_duration():
+        """Calculate days in space for current flight"""
+
+        #convert flight start date into a datetime obj
+        current_flight_start = astronaut.current_flight_start
+        start = datetime.strptime(current_flight_start, "%Y.%m.%d")
+
+        #get current time datetime obj
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        current = datetime.strptime(current_time, "%Y-%m-%d %H:%M:%S")
+
+        #calculate delta, return days only
+        delta = current - start
+        days = delta.days
+        return days
+
+    days = current_flight_duration()
+
+    return render_template("astronaut.html",
+                            flag=flag,
+                            days=days,
+                            **astronaut.__dict__)
+
+#######################################################################
 
 @app.route('/astros.json')
 def astronauts_info():
@@ -75,58 +104,7 @@ def astronauts_info():
     jdict = requests.get("http://api.open-notify.org/astros.json")
     jdict = jdict.json()
 
-
     return jsonify(jdict)
-
-
-@app.route("/astronauts/<int:astronaut_id>")
-def show_astronaut_info(astronaut_id):
-    """Show information about the astronaut"""
-
-    astronaut = Astronaut.query.filter(Astronaut.astronaut_id == astronaut_id).one()
-
-    # astronaut.flag = astronaut.countries.flag
-    # astronaut.days = 3
-
-    photo = astronaut.photo
-    name = astronaut.name
-    num_completed_flights = astronaut.num_completed_flights
-    duration_completed_flights = astronaut.duration_completed_flights
-    num_evas = astronaut.num_evas
-    duration_evas = astronaut.duration_evas
-    instagram = astronaut.instagram
-
-    country = astronaut.countries
-    flag = country.flag
-
-    def current_flight_duration():
-        """Calculate days in space for current flight"""
-
-        current_flight_start = astronaut.current_flight_start
-        start = datetime.strptime(current_flight_start, "%Y.%m.%d")
-
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        current = datetime.strptime(current_time, "%Y-%m-%d %H:%M:%S")
-
-        delta = current - start
-
-        days = delta.days
-
-        return days
-
-    days = current_flight_duration()
-
-    return render_template("astronaut.html", #**astronaut.__dict__)
-    
-                            photo=photo,
-                            name=name,
-                            num_completed_flights=num_completed_flights,
-                            duration_completed_flights=duration_completed_flights,
-                            num_evas=num_evas,
-                            duration_evas=duration_evas,
-                            instagram=instagram,
-                            flag=flag,
-                            days=days)
 
 #########################################################################
 
