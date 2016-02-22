@@ -9,6 +9,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Astronaut, Country
 
+from helper import insta
+
 import requests
 
 
@@ -46,13 +48,14 @@ def index():
     #DB astronauts table query for names in name_list
     list_astro_obj = db.session.query(Astronaut).filter(Astronaut.name.in_(name_list)).all()
 
-    def lookup_id_from_name(name):
+    def lookup_id_from_name(name):  # move to model
         """Returns id corresponding to given astronaut's name"""
 
         for astronaut in list_astro_obj:
             if astronaut.name == name:
                 return astronaut.astronaut_id
         return None
+
 
     name_id = {name: lookup_id_from_name(name) for name in name_list}
 
@@ -65,14 +68,15 @@ def index():
 def show_astronaut_info(astronaut_id):
     """Show information about the astronaut"""
 
-    #Query astronauts table on astronaut_id
+    #Query astronauts table on astronaut_id    # 71-93 model call repr of astro to pass
     astronaut = Astronaut.query.filter(Astronaut.astronaut_id == astronaut_id).one()
 
     #From countries table get corresponding flag
     country = astronaut.countries
     flag = country.flag
 
-    def current_flight_duration():
+
+    def current_flight_duration(): # model
         """Calculate days in space for current flight"""
 
         #convert flight start date into a datetime obj
@@ -90,10 +94,23 @@ def show_astronaut_info(astronaut_id):
 
     days = current_flight_duration()
 
+   
+
+    result = insta(astronaut.instagram) # rename function
+    instagram = astronaut.instagram
+
+    result = None
+    if instagram != None:
+        result = insta(instagram) # returns list_of_image_url
+    print result 
+
     return render_template("astronaut.html",
                             flag=flag,
                             days=days,
-                            **astronaut.__dict__)
+                            result=result,
+                            **astronaut.__dict__) 
+
+
 
 #######################################################################
 
@@ -105,6 +122,8 @@ def astronauts_info():
     jdict = jdict.json()
 
     return jsonify(jdict)
+
+
 
 #########################################################################
 

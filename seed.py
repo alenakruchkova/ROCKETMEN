@@ -24,7 +24,7 @@ rows = soup.find_all("tr")
 # and store necessary information in the list of lists
 list_of_lists = []
 
-rows = soup.find_all("tr")[1:552]
+rows = soup.find_all("tr")[1:552] #think of another way to find the last row
 
 def get_name_date():
     """From table row get text in 2nd and 3rd colums"""

@@ -40,11 +40,15 @@
 </p>
 
 <p>
-	{% if instagram %}   
-		Instagram: @{{ instagram }}
+	{% if result %}   
+		{% for image in result %}
+            <img src={{ image }}>
+        {% endfor %}
 	{% endif %}
 </p>
 
+<iframe src="//www.instagram.com/volkov_iss" width="500" height="500">
+ </iframe>
 
 {% endblock %}
 
