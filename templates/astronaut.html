@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- Dynamically create pages for astronauts -->
+
 <div>
 	{% if photo %}
 		<img src={{ photo }}>
@@ -39,16 +41,6 @@
 	{% endif %}
 </p>
 
-<p>
-	{% if result %}   
-		{% for image in result %}
-            <img src={{ image }}>
-        {% endfor %}
-	{% endif %}
-</p>
-
-<iframe src="//www.instagram.com/volkov_iss" width="500" height="500">
- </iframe>
 
 {% endblock %}
 

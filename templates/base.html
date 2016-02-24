@@ -1,13 +1,21 @@
 <!doctype html>
 <html>
 <head>
+
   	<title>{% block title %}TITLE GOES HERE{% endblock %}</title>
   	<link rel="stylesheet" href="/static/css/styles.css">
   	<script src="https://code.jquery.com/jquery.js"></script>
+  	{% block head %}
+  		<!-- put extra CSS/JS here -->
+  	{% endblock %}
+
 </head>
 
 <body>
+
 	<a href="/home"><button type="button" id="home">HOME</button></a> 
+	<a href="/iss"><button type="button" id="iss">ISS</button></a> 
   	{% block content %}BODY CONTENT GOES HERE {% endblock %}
+
 </body>
 </html>

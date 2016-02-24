@@ -10,8 +10,7 @@ INSERT INTO Countries (country_id, name, flag)
 UPDATE Astronauts SET dob='1964.02.21', status='Active', country_id='US', 
 						current_flight_start='2015.03.27', num_completed_flights=4, 
 						duration_completed_flights='180 days 01 h 49 min 26 sec',
-						num_evas=3, duration_evas='18 h 20 min', photo='http://www.astronaut.ru/flights/foto/iss25/kelly.jpg',
-						instagram='24253737' 
+						num_evas=3, duration_evas='18 h 20 min', photo='http://www.astronaut.ru/flights/foto/iss25/kelly.jpg'
 						WHERE name='Scott Kelly';
 
 UPDATE Astronauts SET name='Mikhail Kornienko', dob='1960.04.15', status='Active', country_id='RU', 
@@ -30,8 +29,7 @@ UPDATE Astronauts SET country_id='US', current_flight_start='2015.12.15',
 				 		WHERE name='Timothy Kopra';
 
 UPDATE Astronauts SET country_id='RU', current_flight_start='2015.09.02',
-						photo='http://www.astronaut.ru/as_rusia/vvs/foto/volkov2.jpg',
-						instagram='1299594415' 
+						photo='http://www.astronaut.ru/as_rusia/vvs/foto/volkov2.jpg'
 						WHERE name='Sergey Volkov';
 
 UPDATE Astronauts SET country_id='RU', current_flight_start='2015.12.15',

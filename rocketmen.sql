@@ -21,8 +21,7 @@ CREATE TABLE Astronauts(
 	num_evas INTEGER,
 	duration_evas VARCHAR(100),
 	photo VARCHAR(400),
-	twitter VARCHAR(80),
-	instagram VARCHAR(400)
+	twitter VARCHAR(80)
 	);
 
 

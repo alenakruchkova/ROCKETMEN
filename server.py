@@ -1,18 +1,12 @@
 """Rocketmen"""
 
 from datetime import datetime
-
 from jinja2 import StrictUndefined
-
 from flask import Flask, render_template, redirect, request, session, jsonify, json
 from flask_debugtoolbar import DebugToolbarExtension
-
 from model import connect_to_db, db, Astronaut, Country
-
-from helper import insta
-
 import requests
-
+from googlemaps import Client
 
 
 app = Flask(__name__)
@@ -59,6 +53,7 @@ def index():
 
     name_id = {name: lookup_id_from_name(name) for name in name_list}
 
+
     return render_template("home.html",
                             num_result=num_result,
                             name_id=name_id)
@@ -94,22 +89,64 @@ def show_astronaut_info(astronaut_id):
 
     days = current_flight_duration()
 
-   
-
-    result = insta(astronaut.instagram) # rename function
-    instagram = astronaut.instagram
-
-    result = None
-    if instagram != None:
-        result = insta(instagram) # returns list_of_image_url
-    print result 
-
     return render_template("astronaut.html",
                             flag=flag,
                             days=days,
-                            result=result,
-                            **astronaut.__dict__) 
+                            **astronaut.__dict__)
 
+@app.route('/iss')
+def iss_page():
+    """Show information about ISS"""
+    
+    # Get JSON with current lat and lng of ISS from API"""
+    jdict = requests.get("http://api.open-notify.org/iss-now.json")
+    jdict = jdict.json()
+
+    lat = jdict["iss_position"]["latitude"]
+    lng = jdict["iss_position"]["longitude"]
+    
+    print lat
+    print lng
+
+    return render_template("iss.html",
+                            lat=lat,
+                            lng=lng)
+
+
+@app.route('/iss-pass', methods=['GET'])
+def get_iss_pass_result():
+    # api_key=os.environ['GEOCODING_KEY']
+
+    lat=None
+    lng=None
+
+    api_key= "AIzaSyA_0a3RHI16_J-vY6m8qIgpu0OP2DKSlMg"
+    gmaps = Client(api_key)
+
+    # for user input (address) calculate geocode using Googlemaps API
+    # address = 'Constitution Ave NW & 10th St NW, Washington, DC'
+    address = request.args.get("address")
+
+    for dictionary in gmaps.geocode(address):
+        lat = dictionary['geometry']['location']['lat']
+        lng = dictionary['geometry']['location']['lng']
+    
+
+    payload = {'lat': lat,
+               'lon': lng}
+
+    result = requests.get("http://api.open-notify.org/iss-pass.json", params=payload)
+    jdict = result.json()
+
+    pass_duration = jdict["response"][0]["duration"]
+    pass_datetime = jdict["response"][0]["risetime"]
+
+    pass_datetime = datetime.fromtimestamp(int(pass_datetime)).strftime('%Y-%m-%d %H:%M:%S')
+
+    iss_pass = {'duration': pass_duration,
+                'date_time': pass_datetime}
+
+    return jsonify(iss_pass)
 
 
 #######################################################################
@@ -119,6 +156,27 @@ def astronauts_info():
     """JSON info about people in space right now."""
 
     jdict = requests.get("http://api.open-notify.org/astros.json")
+    jdict = jdict.json()
+
+    return jsonify(jdict)
+
+@app.route('/iss-pass.json')
+def iss_pass_info():
+    """JSON with timestamp and duration in seconds 
+    for the next passing of ISS for specific location."""
+
+    payload = {'lat': 37,
+               'lon': 122 }
+    jdict = requests.get("http://api.open-notify.org/iss-pass.json", params=payload)
+    jdict = jdict.json()
+
+    return jsonify(jdict)
+
+@app.route('/iss-now.json')
+def iss_now_info():
+    """JSON with current lat and lng of ISS"""
+
+    jdict = requests.get("http://api.open-notify.org/iss-now.json")
     jdict = jdict.json()
 
     return jsonify(jdict)
