@@ -1,12 +1,18 @@
 """Rocketmen"""
 
-from datetime import datetime
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, session, jsonify, json
 from flask_debugtoolbar import DebugToolbarExtension
+
 from model import connect_to_db, db, Astronaut, Country
-import requests
+from helper import get_people_in_space_info, lookup_id_from_name, current_flight_duration, look_up_flag, get_current_iss_location
+from helper import get_lat_lng, get_next_iss_pass_for_lat_lng
+
 from googlemaps import Client
+from datetime import datetime
+import requests
+import os
+import sys
 
 
 app = Flask(__name__)
@@ -17,7 +23,8 @@ app.secret_key = "ABC"
 #  (otherwise Jinja fails scilently)
 app.jinja_env.undefined = StrictUndefined
 
-############################################################################
+######################################################################
+
 
 @app.route('/')
 def get_seed_info():
@@ -30,8 +37,7 @@ def get_seed_info():
 def index():
     """Homepage."""
     # Get data from API
-    jdict = requests.get("http://api.open-notify.org/astros.json")
-    jdict = jdict.json()
+    jdict = get_people_in_space_info()
 
     # Number of people in space from JSON data
     num_result = jdict['number']
@@ -39,20 +45,11 @@ def index():
     # COLLECT list of names like ["Michael Kornienko", "Sergey Vokov",...] from JSON data
     name_list = [p['name'] for p in jdict['people']]
 
-    #DB astronauts table query for names in name_list
+    # DB astronauts table query for names in name_list
     list_astro_obj = db.session.query(Astronaut).filter(Astronaut.name.in_(name_list)).all()
 
-    def lookup_id_from_name(name):  # move to model
-        """Returns id corresponding to given astronaut's name"""
-
-        for astronaut in list_astro_obj:
-            if astronaut.name == name:
-                return astronaut.astronaut_id
-        return None
-
-
-    name_id = {name: lookup_id_from_name(name) for name in name_list}
-
+    # Dictionary with all names from API request and corresponding ids from db
+    name_id = {name: lookup_id_from_name(name, list_astro_obj) for name in name_list}
 
     return render_template("home.html",
                             num_result=num_result,
@@ -63,50 +60,26 @@ def index():
 def show_astronaut_info(astronaut_id):
     """Show information about the astronaut"""
 
-    #Query astronauts table on astronaut_id    # 71-93 model call repr of astro to pass
+    #Query astronauts table on astronaut_id
     astronaut = Astronaut.query.filter(Astronaut.astronaut_id == astronaut_id).one()
 
-    #From countries table get corresponding flag
-    country = astronaut.countries
-    flag = country.flag
-
-
-    def current_flight_duration(): # model
-        """Calculate days in space for current flight"""
-
-        #convert flight start date into a datetime obj
-        current_flight_start = astronaut.current_flight_start
-        start = datetime.strptime(current_flight_start, "%Y.%m.%d")
-
-        #get current time datetime obj
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        current = datetime.strptime(current_time, "%Y-%m-%d %H:%M:%S")
-
-        #calculate delta, return days only
-        delta = current - start
-        days = delta.days
-        return days
-
-    days = current_flight_duration()
+    flag = look_up_flag(astronaut)
+    days = current_flight_duration(astronaut)
 
     return render_template("astronaut.html",
                             flag=flag,
                             days=days,
                             **astronaut.__dict__)
 
+
 @app.route('/iss')
 def iss_page():
     """Show information about ISS"""
-    
-    # Get JSON with current lat and lng of ISS from API"""
-    jdict = requests.get("http://api.open-notify.org/iss-now.json")
-    jdict = jdict.json()
+
+    jdict = get_current_iss_location()
 
     lat = jdict["iss_position"]["latitude"]
     lng = jdict["iss_position"]["longitude"]
-    
-    print lat
-    print lng
 
     return render_template("iss.html",
                             lat=lat,
@@ -115,28 +88,9 @@ def iss_page():
 
 @app.route('/iss-pass', methods=['GET'])
 def get_iss_pass_result():
-    # api_key=os.environ['GEOCODING_KEY']
+    """Get duration and time for the next ISS pass for user input location"""
 
-    lat=None
-    lng=None
-
-    api_key= "AIzaSyA_0a3RHI16_J-vY6m8qIgpu0OP2DKSlMg"
-    gmaps = Client(api_key)
-
-    # for user input (address) calculate geocode using Googlemaps API
-    # address = 'Constitution Ave NW & 10th St NW, Washington, DC'
-    address = request.args.get("address")
-
-    for dictionary in gmaps.geocode(address):
-        lat = dictionary['geometry']['location']['lat']
-        lng = dictionary['geometry']['location']['lng']
-    
-
-    payload = {'lat': lat,
-               'lon': lng}
-
-    result = requests.get("http://api.open-notify.org/iss-pass.json", params=payload)
-    jdict = result.json()
+    jdict = get_next_iss_pass_for_lat_lng()
 
     pass_duration = jdict["response"][0]["duration"]
     pass_datetime = jdict["response"][0]["risetime"]
@@ -149,7 +103,9 @@ def get_iss_pass_result():
     return jsonify(iss_pass)
 
 
-#######################################################################
+######################################################################
+
+# ROUTES TESTING API CALLS
 
 @app.route('/astros.json')
 def astronauts_info():
@@ -160,9 +116,10 @@ def astronauts_info():
 
     return jsonify(jdict)
 
+
 @app.route('/iss-pass.json')
 def iss_pass_info():
-    """JSON with timestamp and duration in seconds 
+    """JSON with timestamp and duration in seconds
     for the next passing of ISS for specific location."""
 
     payload = {'lat': 37,
@@ -171,6 +128,7 @@ def iss_pass_info():
     jdict = jdict.json()
 
     return jsonify(jdict)
+
 
 @app.route('/iss-now.json')
 def iss_now_info():
@@ -182,8 +140,7 @@ def iss_now_info():
     return jsonify(jdict)
 
 
-
-#########################################################################
+######################################################################
 
 if __name__ == "__main__":
     # debug=True , since it has to be True at the point

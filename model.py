@@ -54,7 +54,7 @@ class Astronaut(db.Model):
 
     photo = db.Column(db.String(400), nullable=True)
     twitter = db.Column(db.String(80), nullable=True)
-    instagram = db.Column(db.String(400), nullable=True)
+    widget = db.Column(db.String(40), nullable=True)
 
     #Define relationship to country
     country = db.relationship("Country", backref=db.backref("astronauts"))

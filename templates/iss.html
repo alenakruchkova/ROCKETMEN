@@ -15,51 +15,62 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
 
+    	var map;
+    	var gmarkers = [];
+
 	    function initMap(){
 	    	// Specify where map is centered
-	    	var myLatLng = {lat:{{lat}},lng:{{lng}}}
+	    	var myLatLng = {lat:{{lat}},lng:{{lng}}};
 
 	    	// Create map obj and specify the DOM element for display
-	    	var map = new google.maps.Map(
+	    	map = new google.maps.Map(
 	                    document.getElementById('map-canvas'),{
 	                    center: myLatLng,
 	                    zoom: 3
 	        });
 
-	        var icon = {
-			    url: '/static/img/iss-400w.png', // url
-			    scaledSize: new google.maps.Size(50, 50), // scaled size
-			    origin: new google.maps.Point(0,0), // origin
-			    anchor: new google.maps.Point(0, 0) // anchor
-			};
-
-	        var marker = new google.maps.Marker({
-	    		position: myLatLng,
-	    		map: map,
-	    		icon: icon
-	    	})
-
 	    }
 
 	    google.maps.event.addDomListener(window, 'load', initMap);
 
-
-		// //Time between marker refreshes
-	 //    var INTERVAL = 2000;
         
-	 //    function getMarkers() {
+	    (function getMarkers() {
 
-	 //    	var myLatLng = {lat:{{lat}},lng:{{lng}}}
+	    	$.getJSON('/iss-now.json', function(result){
 
-	 //    	var marker = new google.maps.Marker({
-	 //    		position: myLatLng,
-	 //    		map: map,
-	 //    		icon: icon
-	 //    	})
-    
-  //       }
+	    		console.log(result);
 
-  //       window.setTimeout(getMarkers,INTERVAL);
+	    		result_lat = result.iss_position.latitude;
+    			result_lng = result.iss_position.longitude;
+
+    			var myLatLng = {lat:result_lat,lng:result_lng};
+  			
+				for(i=0; i<gmarkers.length; i++){
+			        gmarkers[i].setMap(null);
+			    }
+				
+
+		    	var icon = {
+				    url: '/static/img/iss-400w.png', // url
+				    scaledSize: new google.maps.Size(50, 50), // scaled size
+				    origin: new google.maps.Point(0,0), // origin
+				    anchor: new google.maps.Point(0, 0) // anchor
+				};
+
+		        var marker = new google.maps.Marker({
+		    		position: myLatLng,
+		    		map: map,
+		    		icon: icon
+		 
+		    	});
+
+		        gmarkers.push(marker);
+
+    		setTimeout(getMarkers, 1000);
+	    	});
+
+	    }());
+
     
 
     </script>
@@ -85,7 +96,8 @@
 
 <script>
 	function showNextPass(results){
-		$('#show-result').text("Next ISS Pass for your location will happen on " + results.date_time + " and will last for " +results.duration + " seconds");
+		$('#show-result').text("Next ISS Pass for your location will happen on " +
+			results.date_time + " and will last for " + results.duration + " seconds");
 		console.log(results.date_time);
 	}
 
