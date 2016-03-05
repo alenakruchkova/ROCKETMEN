@@ -1,23 +1,35 @@
-{% extends 'base.html' %}
-{% block title %}ROCKETMEN index{% endblock %}
-{% block content %}
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+ 	<link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet"
+		href="static/bootstrap-styles.css">
 
+	<script src="http://code.jquery.com/jquery.js"></script>
+</head>
+<body>
 	<!-- Nav to home page -->
 
-	
-<div class="api_call">
-	<a href="/home">
-		<button type="button" id="button">How many people are in space right now?
-		</button>
-	</a>
-</div>
+<!-- It's container-fluid so it spans the whole page. -->
+<br>
+<br>
+<br>
+<br>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class"col-xs-12 col-md-1 col-lg-1 col-md-offset-6 col-lg-offset-6" >
+					<a href="/home"><img class="center-block" src="/static/img/enter.png" align="middle" vertical-align="middle">
+					</a>
+				</div>
+			</div>
+		</div>
 
 
-<script>
-	$("#home").hide();
-	$("#iss").hide();
-	$("#stats").hide();
 
-</script>
+</body>
 
-{% endblock %}
+</html>

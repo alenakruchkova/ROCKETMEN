@@ -33,9 +33,7 @@ def get_lat_lng():
     'San Francisco, CA','Moscow, Russia')calculate geocode using Googlemaps API"""
 
     api_key = os.environ['GEOCODING_KEY']
-
     gmaps = Client(api_key)
-
     address = request.args.get("address")
 
     for dictionary in gmaps.geocode(address):
@@ -50,14 +48,14 @@ def get_lat_lng():
 
 def get_next_iss_pass_for_lat_lng():
     """ For lat lng calculate the next ISS pass"""
-
+    # Based n user input get lat/lgn for address
     payload = get_lat_lng()
 
+    # Get data from ISS pass API using payload
     result = requests.get("http://api.open-notify.org/iss-pass.json", params=payload)
     jdict = result.json()
 
     return jdict
-
 
 ######################################################################
 
@@ -96,6 +94,8 @@ def current_flight_duration(astronaut):
     days = delta.days
 
     return days
+
+
 
 #####################################################################
 

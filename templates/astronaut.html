@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
+{% block title %}ASTRONAUTS{% endblock %}
 {% block content %}
 
 <!-- Dynamically create pages for astronauts -->
 
-<div>
-	{% if photo %}
-		<img src={{ photo }}>
-	{% endif %}
+<div class="container">
+<h1 class="page-header"><b>{{ name }}</b></h1>
+    <div class="row">
+        <div class"col-xs-12 col-md-4 col-lg-4">
+            <div class="col-xs-12 col-md-4 col-lg-4">
+                {% if photo %}
+                    <img style="max-height:400px" class="img-responsive" src={{ photo }}>
+                {% endif %}
+            </div>  
+        </div>
+        <div class"col-xs-12 col-md-6 col-lg-6 col-md-offset-1 col-clalg-offset-1">
+            <a class="twitter-timeline" href="https://twitter.com/{{twitter}}" data-widget-id="{{widget}}"></a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+            </script>
+        </div>
+    </div>
+    <div class="row">
+            <div class"col-xs-12 col-md-4 col-lg-4">
+                <div class="col-xs-12 col-md-4 col-lg-4">
+                    {% if flag %}
+                        <img style="max-height:50px" src={{ flag }}>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 </div>
-<p><h1><b>{{ name }}</b></h1></p>
+
+
+
+
+
+<!-- <div>
+	
 <div>
 	{% if flag %}
 		<img src={{ flag }}>
@@ -42,9 +70,12 @@
 </p>
 
 
-<a class="twitter-timeline" href="https://twitter.com/{{twitter}}" data-widget-id="{{widget}}"></a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-</script>
+
+    
+    <a class="twitter-timeline" href="https://twitter.com/{{twitter}}" data-widget-id="{{widget}}"></a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    </script>
+</div> -->
 
 {% endblock %}
 

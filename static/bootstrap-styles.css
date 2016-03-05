@@ -1,0 +1,15 @@
+/*   Sitewide  */
+
+
+.nav, .navbar, .navbar-default, .navbar-nav, .active {
+	background-color: #00bfff;
+	color: #00bfff;
+	border-radius: 0px;
+}
+
+.active{
+	background-color: #00bfff;
+	color: #ffffff;
+	vertical-align: center;
+
+}

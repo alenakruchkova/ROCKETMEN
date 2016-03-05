@@ -11,7 +11,7 @@ import urllib
 
 ###########################################################################
 
-all_rows = []
+# SCRAPE ASTRONAUTS BY FLIGHT WIKI PAGE
 
 
 def get_html_from_wiki():
@@ -23,6 +23,8 @@ def get_html_from_wiki():
 
     tables = soup.find_all("table", class_="wikitable")
 
+    all_rows = []
+
     # Get all the rows from the tables on the webpage
     for table in tables:
         table_rows = table.find_all("tr")
@@ -31,12 +33,11 @@ def get_html_from_wiki():
     return all_rows
 
 
-list_of_lists = []
-
-
-def get_name_date():
+def get_name_date(all_rows):
     """Get text between <td> tags and store necessary information
         (from table row get text in 2nd and 3rd colums) in the list of lists"""
+
+    list_of_lists = []
 
     for row in all_rows:  # for list of lists representing rows
         for item in row:  # for item in list representing a row
@@ -47,14 +48,16 @@ def get_name_date():
                 new_list.append(cells[2].get_text())
                 list_of_lists.append(new_list)
 
+    return list_of_lists
+
 
 def load_astronauts():
     """Load information from list_of_lists into database"""
 
     print "Astronauts"
 
-    get_html_from_wiki()
-    get_name_date()
+    scrape_result = get_html_from_wiki()
+    list_of_lists = get_name_date(scrape_result)
 
     for item in list_of_lists:
         name, first_flight_start = item
@@ -68,8 +71,43 @@ def load_astronauts():
     db.session.commit()
 
 
+def load_astros_info():
+    """Load astros info from astros.csv into database."""
+
+    print "Astros Info"
+
+    # Read astros.csv file
+    for row in open("seed_data/astros.csv"):
+        r = row.splitlines()
+
+        for rn in r:
+
+            astronaut_id, gender, dob, country_id, status, num_completed_flights = rn.split(",")
+
+            gender = gender or None
+            dob = dob or None
+            country_id = country_id or None
+            status = status or None
+            num_completed_flights = num_completed_flights or None
+
+
+            astronaut = Astronaut(astronaut_id=astronaut_id,
+                              gender=gender,
+                              dob=dob,
+                              country_id=country_id,
+                              status=status,
+                              num_completed_flights=num_completed_flights)
+
+            # astronaut = db.session.merge(astronaut)
+            db.session.merge(astronaut)
+
+    # Commit
+    db.session.commit()
+
+##############################################################################
+
 def load_countries():
-    """Load countries from countres.csv into database."""
+    """Load countries from output.txt into database."""
 
     print "Countries"
 
@@ -77,7 +115,7 @@ def load_countries():
     # we won't be trying to add duplicate users
     Country.query.delete()
 
-    # Read countries.csv file and insert data
+    # Read file and insert data
     for row in open("seed_data/output.txt"):
         r = row.splitlines()
 
@@ -88,6 +126,11 @@ def load_countries():
 
         # Add to the session
         db.session.add(country)
+
+    # Add Soviet Union
+    sovu = Country(name='Soviet Union', country_id='SU')
+
+    db.session.add(sovu)
 
     # Commit
     db.session.commit()
@@ -105,3 +148,5 @@ if __name__ == "__main__":
     load_countries()
 
     load_astronauts()
+
+    load_astros_info()

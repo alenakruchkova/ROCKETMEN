@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}STATS{% endblock %}
+{% block head %}
+	<script src=
+		"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js">
+	</script>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Human Flight statistics -->
+<br>
+<br>
+<div><p><b>SORT BY:</b></p></div>
+
+    <button id="decade">DECADE</button> 
+    <button id="nationality">NATIONALITY</button>
+    <button id="number">NUMBER OF FLIGHTS</button>
+    <button id="gender">GENDER</button>
+<br>
+<br>
+<div class="astro-chart">
+    <canvas id="donutChart"></canvas>
+    <div id="donutLegend" class="chart-legend"></div>
+</div>
+
+<script>
+
+    function showMeMyDonut(data){
+
+        $('#donutChart').remove();
+        $('.astro-chart').prepend('<canvas id="donutChart"></canvas>');
+
+        var options = { responsive: true };
+        var ctx_donut = $('#donutChart').get(0).getContext("2d");
+
+        var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
+
+        $('#donutLegend').html(myDonutChart.generateLegend());
+
+	}
+
+    function getGenderChart(evt){
+        evt.preventDefault();
+        console.log("in get gender");
+        $.get('/get-gender-chart.json', showMeMyDonut);
+    }
+
+     function getDecadeChart(evt){
+        evt.preventDefault();
+        console.log("in get by decade");
+        $.get('/get-decade-chart.json', showMeMyDonut);
+    }
+
+    function getNatChart(evt){
+        evt.preventDefault();
+        console.log("in get nat");
+
+        $.get('/get-nat-chart.json', showMeMyDonut);
+    }
+
+     function getNumFlightsChart(evt){
+        evt.preventDefault();
+        console.log("in get num flights");
+
+        $.get('/get-numflights-chart.json', showMeMyDonut);
+    }
+
+    
+    $('#gender').on('click', getGenderChart);
+    $('#decade').on('click', getDecadeChart);
+    $('#nationality').on('click', getNatChart);
+    $('#number').on('click', getNumFlightsChart);
+    
+  
+
+</script>
+
+{% endblock %}

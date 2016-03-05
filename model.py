@@ -42,6 +42,12 @@ class Astronaut(db.Model):
                             nullable=True)
 
     first_flight_start = db.Column(db.String(100), nullable=False)
+    second_flight_start = db.Column(db.String(100), nullable=True)
+    third_flight_start = db.Column(db.String(100), nullable=True)
+    fourth_flight_start = db.Column(db.String(100), nullable=True)
+    fifth_flight_start = db.Column(db.String(100), nullable=True)
+    sixth_flight_start = db.Column(db.String(100), nullable=True)
+    seventh_flight_start = db.Column(db.String(100), nullable=True)
 
     current_flight_start = db.Column(db.String(100), nullable=True)
     current_flight_spacecraft = db.Column(db.String(100), nullable=True)

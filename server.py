@@ -8,6 +8,10 @@ from model import connect_to_db, db, Astronaut, Country
 from helper import get_people_in_space_info, lookup_id_from_name, current_flight_duration, look_up_flag, get_current_iss_location
 from helper import get_lat_lng, get_next_iss_pass_for_lat_lng
 
+from sqlalchemy import func
+
+import random
+
 from googlemaps import Client
 from datetime import datetime
 import requests
@@ -29,6 +33,10 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def get_seed_info():
     """Show landing page"""
+
+    # import rand
+    # if rand.random() > 0.5:
+    #     async('fetch_data ')
 
     return render_template("index.html")
 
@@ -75,7 +83,7 @@ def show_astronaut_info(astronaut_id):
 @app.route('/iss')
 def iss_page():
     """Show information about ISS"""
-
+    # Get data from isss-now API
     jdict = get_current_iss_location()
 
     lat = jdict["iss_position"]["latitude"]
@@ -89,12 +97,13 @@ def iss_page():
 @app.route('/iss-pass', methods=['GET'])
 def get_iss_pass_result():
     """Get duration and time for the next ISS pass for user input location"""
-
+    # Get data from iss-pass API
     jdict = get_next_iss_pass_for_lat_lng()
 
     pass_duration = jdict["response"][0]["duration"]
     pass_datetime = jdict["response"][0]["risetime"]
 
+    # Convert timestamp into date/time string
     pass_datetime = datetime.fromtimestamp(int(pass_datetime)).strftime('%Y-%m-%d %H:%M:%S')
 
     iss_pass = {'duration': pass_duration,
@@ -103,9 +112,225 @@ def get_iss_pass_result():
     return jsonify(iss_pass)
 
 
+@app.route('/stats')
+def get_stats_all_human_flights():
+    """Show charts and graphs representing all human space flights"""
+
+    return render_template("stats.html")
+
+
+@app.route('/get-gender-chart.json')
+def get_gender_chart():
+    """Query database and generate data for gender chart"""
+
+    male_count = db.session.query(Astronaut).filter_by(gender='M').count()
+    female_count = db.session.query(Astronaut).filter_by(gender='F').count()
+
+    data_list_of_dicts = {
+        'astronauts': [
+            {
+                "value": int(male_count),
+                "color": "#00bfff",
+                "highlight": "#4dd2ff",
+                "label": "Male"
+            },
+            {
+                "value": int(female_count),
+                "color": "#ff6699",
+                "highlight": "#ff99bb",
+                "label": "Female"
+            },
+        ]
+    }
+    return jsonify(data_list_of_dicts)
+
+
+@app.route('/get-decade-chart.json')
+def get_decade_chart():
+    """Query database and generate data for decade chart"""
+
+    astronauts = db.session.query(Astronaut).all()
+
+    sixties = 0
+    seventies = 0
+    eighties = 0
+    nineties = 0
+    twothounds = 0
+    twothousandtens = 0
+
+    for astronaut in astronauts:
+        year = int(astronaut.first_flight_start[-4:])
+        if year > 2009:
+            twothousandtens += 1
+        elif year > 1999:
+            twothounds += 1
+        elif year > 1989:
+            nineties += 1
+        elif year > 1979:
+            eighties += 1
+        elif year > 1969:
+            seventies += 1
+        else:
+            sixties += 1
+
+    data_list_of_dicts = {
+        'astronauts': [
+            {
+                "value": int(sixties),
+                "color": "#ff0000",
+                "highlight": "#ff4d4d",
+                "label": "60's"
+            },
+            {
+                "value": int(seventies),
+                "color": "#ff751a",
+                "highlight": "#ffa366",
+                "label": "70's"
+            },
+            {
+                "value": int(eighties),
+                "color": "#ffff00",
+                "highlight": "#ffff4d",
+                "label": "80's"
+            },
+            {
+                "value": int(nineties),
+                "color": "#00ff00",
+                "highlight": "#4dff4d",
+                "label": "90's"
+            },
+            {
+                "value": int(twothounds),
+                "color": "#00bfff",
+                "highlight": "#4dd2ff",
+                "label": "2000's"
+            },
+            {
+                "value": int(twothousandtens),
+                "color": "#cc00ff",
+                "highlight": "#e066ff",
+                "label": "2010's"
+            },
+        ]
+    }
+    return jsonify(data_list_of_dicts)
+
+
+@app.route('/get-nat-chart.json')
+def get_nat_chart():
+    """Query database and generate data for decade chart"""
+
+    # Query db for astronauts by country
+    nat_count = db.session.query(func.count(Astronaut.country_id), Country.name).join(Country).group_by(Country.name).all()
+
+    # Create nat_dict {"country": number of astronauts}.
+    # Combine counts for countries with less then 10 flights under key "other"
+    nat_dict = {"other": 0}
+    for tupel in nat_count:
+        if tupel[0] > 9:
+            nat_dict[tupel[1]] = tupel[0]
+        else:
+            nat_dict["other"] += tupel[0]
+
+    # Combine counts for Russia and Soviet Union
+    nat_dict["Russian Federation"] += nat_dict["Soviet Union"]
+    del nat_dict["Soviet Union"]
+
+    color = ["#ff0000", "#ff751a", "#ffff00", "#00ff00", "#00bfff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff"]
+    highlight = ["#ff4d4d", "#ffa366", "#ffff4d", "#4dff4d", "#4dd2ff", "#e066ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff"]
+
+    list_of_dicts = []
+
+    data_list_of_dicts = {
+        'astronauts': list_of_dicts}
+
+    i = 0
+    for item in nat_dict:
+        list_of_dicts.append({
+                "value": int(nat_dict[item]),
+                "color": str(color[i]),
+                "highlight": str(highlight[i]),
+                "label": str(item),
+            })
+
+    return jsonify(data_list_of_dicts)
+
+
+@app.route('/get-numflights-chart.json')
+def get_num_flights_chart():
+    """Query database and generate data for number of flights chart"""
+
+    # desc order vvvvv
+
+    # flight_count = db.session.query(func.count(Astronaut.num_completed_flights),
+    #     Astronaut.num_completed_flights).group_by(Astronaut.num_completed_flights).all()
+
+    # num_flight_dict = {}
+    # for tupel in flight_count:
+    #     num_flight_dict[tupel[1]] = tupel[0]
+
+
+    one = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 1).count()
+    two = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 2).count()
+    three = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 3).count()
+    four = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 4).count()
+    five = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 5).count()
+    six = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 6).count()
+    seven = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 7).count()
+
+    data_list_of_dicts = {
+        'astronauts': [
+            {
+                "value": int(one),
+                "color": "#ff0000",
+                "highlight": "#ff4d4d",
+                "label": "1 flight"
+            },
+            {
+                "value": int(two),
+                "color": "#ff751a",
+                "highlight": "#ffa366",
+                "label": "2 flights"
+            },
+            {
+                "value": int(three),
+                "color": "#ffff00",
+                "highlight": "#ffff4d",
+                "label": "3 flights"
+            },
+            {
+                "value": int(four),
+                "color": "#00ff00",
+                "highlight": "#4dff4d",
+                "label": "4 flights"
+            },
+            {
+                "value": int(five),
+                "color": "#00bfff",
+                "highlight": "#4dd2ff",
+                "label": "5 flights"
+            },
+            {
+                "value": int(six),
+                "color": "#cc00ff",
+                "highlight": "#e066ff",
+                "label": "6 flights"
+            },
+            {
+                "value": int(seven),
+                "color": "#ff6699",
+                "highlight": "#ff99bb",
+                "label": "7 flights"
+            },
+        ]
+    }
+
+    return jsonify(data_list_of_dicts)
+
 ######################################################################
 
 # ROUTES TESTING API CALLS
+
 
 @app.route('/astros.json')
 def astronauts_info():
@@ -123,7 +348,7 @@ def iss_pass_info():
     for the next passing of ISS for specific location."""
 
     payload = {'lat': 37,
-               'lon': 122 }
+               'lon': 122}
     jdict = requests.get("http://api.open-notify.org/iss-pass.json", params=payload)
     jdict = jdict.json()
 

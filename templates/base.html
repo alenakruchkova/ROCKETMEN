@@ -1,10 +1,19 @@
 <!doctype html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+ 	<link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet"
+		href="static/bootstrap-styles.css">
+
+	<script src="http://code.jquery.com/jquery.js"></script>
+	
 
   	<title>{% block title %}TITLE GOES HERE{% endblock %}</title>
-  	<link rel="stylesheet" href="/static/css/styles.css">
-  	<script src="https://code.jquery.com/jquery.js"></script>
+  	
+
   	{% block head %}
   		<!-- put extra CSS/JS here -->
   	{% endblock %}
@@ -12,11 +21,23 @@
 </head>
 
 <body>
+	<!-- Static navbar -->
 
-	<a href="/home"><button type="button" id="home">HOME</button></a> 
-	<a href="/iss"><button type="button" id="iss">ISS</button></a>
-	<a href="/iss"><button type="button" id="stats">STATS</button></a>  
+	<nav class="navbar navbar-default" id="navbar navbar-default">
+	  	<div class="container-fluid" id="container">
+	  		<div class="navbar" id="nav">
+	    		<ul class="nav navbar-nav" id="list">
+	        		<li class="active" id="home"><a href="/home">Home</a></li>
+	        		<li class="active" id="iss"><a href="/iss">ISS</a></li>
+	        		<li class="active" id="stats" ><a href="/stats">STATS</a></li>
+	      		</ul>
+	    	</div>
+	  	</div>
+	</nav>
+
   	{% block content %}BODY CONTENT GOES HERE {% endblock %}
 
+
 </body>
+
 </html>
