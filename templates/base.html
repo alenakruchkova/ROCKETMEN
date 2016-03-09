@@ -1,12 +1,14 @@
 <!doctype html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   
- 	<link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css">
+ 	<!-- <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"> -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+ <!--    <link href="css/style.css" rel="stylesheet" media="screen"> -->
     <link rel="stylesheet"
-		href="static/bootstrap-styles.css">
+		href="../static/style.css">
 
 	<script src="http://code.jquery.com/jquery.js"></script>
 	
@@ -23,13 +25,14 @@
 <body>
 	<!-- Static navbar -->
 
-	<nav class="navbar navbar-default" id="navbar navbar-default">
-	  	<div class="container-fluid" id="container">
+	
+	<div class="container-fluid" id="container">
+	  	<nav class="navbar navbar-default" id="navbar navbar-default">	
 	  		<div class="navbar" id="nav">
 	    		<ul class="nav navbar-nav" id="list">
-	        		<li class="active" id="home"><a href="/home">Home</a></li>
-	        		<li class="active" id="iss"><a href="/iss">ISS</a></li>
-	        		<li class="active" id="stats" ><a href="/stats">STATS</a></li>
+	        		<li id="home"><a href="/home"><img style="max-height:45px" class="img-responsive" src="/static/img/astro_logo.png"></a></li>
+	        		<li id="iss"><a href="/iss"><img style="max-height:45px" class="img-responsive" src="/static/img/iss_logo.png"></a></li>
+	        		<li id="stats"><a href="/stats"><img style="max-height:40px" class="img-responsive" src="/static/img/stats_logo.png"></a></li>
 	      		</ul>
 	    	</div>
 	  	</div>

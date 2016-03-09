@@ -1,0 +1,42 @@
+/*   Sitewide  */
+
+
+.navbar-default {
+    background-color: #595959;
+    border-color: #595959;
+
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+.text-lg{
+	font-size: 180px;
+	font-weight: bold;
+	color: #f75e24;
+
+}
+
+.text-md{
+	font-weight: bold;
+	font-size: 40px;
+	vertical-align: middle;
+	color: #58d2d3;
+}
+
+ul
+{
+    list-style-type: none;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.show-result{
+	font-weight: bold;
+	color: #f75e24;
+}

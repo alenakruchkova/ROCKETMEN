@@ -138,12 +138,15 @@ UPDATE Astronauts SET name='Mikhail Kornienko', dob='1960.04.15', status='Active
 						WHERE name='Mikhail Korniyenko';
 
 UPDATE Astronauts SET name='Timothy Peake',country_id='GB', current_flight_start='2015.12.15',
+						num_evas=1, duration_evas='4 h 13 min',
 						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Timothy_Peake%2C_official_portrait.jpg/384px-Timothy_Peake%2C_official_portrait.jpg',
 						twitter='astro_timpeake',
 						widget='702673016488984577'
 						WHERE name='Tim Peake';
 
 UPDATE Astronauts SET country_id='US', current_flight_start='2015.12.15',
+						duration_completed_flights='58 days 02 h 50 min 15 sec',
+						num_evas=3, duration_evas='13 h 31 min',
 						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TimotyKorpav2.jpg/384px-TimotyKorpav2.jpg',
 						twitter='astro_tim',
 						widget='702673368529547264'
@@ -156,6 +159,8 @@ UPDATE Astronauts SET country_id='RU', current_flight_start='2015.09.02',
 						WHERE name='Sergey Volkov';
 
 UPDATE Astronauts SET country_id='RU', current_flight_start='2015.12.15',
+						duration_completed_flights='641 days 11 h 11 min 22 sec',
+						num_evas=6, duration_evas='34 h 50 min',
 						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/YuriMalenchenko.jpg/383px-YuriMalenchenko.jpg' 
 						WHERE name='Yuri Malenchenko';
 

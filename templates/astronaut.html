@@ -7,75 +7,54 @@
 <div class="container">
 <h1 class="page-header"><b>{{ name }}</b></h1>
     <div class="row">
-        <div class"col-xs-12 col-md-4 col-lg-4">
-            <div class="col-xs-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-md-4 col-lg-4">
+            <div class="row">
                 {% if photo %}
                     <img style="max-height:400px" class="img-responsive" src={{ photo }}>
                 {% endif %}
-            </div>  
+            </div>
+            <div class="row">
+                {% if flag %}
+                    <br>
+                    <img style="max-height:50px" src={{ flag }}>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if days %}
+                    <h3>{{ days }} days</h3>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if num_completed_flights %}
+                    Comepleted flights: {{ num_completed_flights }}
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if duration_completed_flights %}
+                    Duration of completed flights: {{ duration_completed_flights }}
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if num_evas %}
+                    Total EVAs: {{ num_evas }}
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if duration_evas %}
+                    Total EVA time: {{ duration_evas }}
+                {% endif %}
+            </div>
+            <br>
+            <br>
         </div>
-        <div class"col-xs-12 col-md-6 col-lg-6 col-md-offset-1 col-clalg-offset-1">
+        <div class="col-xs-12 col-md-6 col-lg-6 col-md-offset-1 col-clalg-offset-1">
             <a class="twitter-timeline" href="https://twitter.com/{{twitter}}" data-widget-id="{{widget}}"></a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
             </script>
         </div>
     </div>
-    <div class="row">
-            <div class"col-xs-12 col-md-4 col-lg-4">
-                <div class="col-xs-12 col-md-4 col-lg-4">
-                    {% if flag %}
-                        <img style="max-height:50px" src={{ flag }}>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
 </div>
 
-
-
-
-
-<!-- <div>
-	
-<div>
-	{% if flag %}
-		<img src={{ flag }}>
-	{% endif %}
-</div>
-<p>
-	{% if days %}
-		<h3>{{ days }} days</h3>
-	{% endif %}
-</p>
-
-<p>
-	{% if num_completed_flights %}
-		Comepleted flights: {{ num_completed_flights }}
-	{% endif %}
-</p>
-<p>
-	{% if duration_completed_flights %}
-		Duration of completed flights: {{ duration_completed_flights }}
-	{% endif %}
-</p>
-<p>
-	{% if num_evas %}
-		Total EVAs: {{ num_evas }}
-	{% endif %}
-</p>
-<p>
-	{% if duration_evas %}
-		Total EVA time: {{ duration_evas }}
-	{% endif %}
-</p>
-
-
-
-    
-    <a class="twitter-timeline" href="https://twitter.com/{{twitter}}" data-widget-id="{{widget}}"></a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-    </script>
-</div> -->
 
 {% endblock %}
 

@@ -26,7 +26,7 @@
 	    	map = new google.maps.Map(
 	                    document.getElementById('map-canvas'),{
 	                    center: myLatLng,
-	                    zoom: 3
+	                    zoom: 2
 	        });
 
 	    }
@@ -52,9 +52,9 @@
 
 		    	var icon = {
 				    url: '/static/img/iss-400w.png', // url
-				    scaledSize: new google.maps.Size(50, 50), // scaled size
+				    scaledSize: new google.maps.Size(65, 65), // scaled size
 				    origin: new google.maps.Point(0,0), // origin
-				    anchor: new google.maps.Point(0, 0) // anchor
+				    anchor: new google.maps.Point(0,0) // anchor
 				};
 
 		        var marker = new google.maps.Marker({
@@ -80,19 +80,25 @@
 
 	<!-- ISS page -->
 
-<br>
- Calculate upcoming ISS passes for a particular location:
- <br>
-<form id="location-form">
-	<label for="field-location">Location</label>
-	<input type="text" name="address" id="field-location">
-	<input type="submit" id="submit-button">
-</form>
-
-<div>
-	<p id="show-result"></p>
+<div class="container">
+	<div class="row">
+		Calculate upcoming ISS passes for a particular location:
+	</div>
+	<br>
+	<div class="row">
+		<form id="location-form">
+			<label for="field-location">Location</label>
+			<input type="text" name="address" id="field-location">
+			<input type="submit" id="submit-button">
+		</form>
+	</div>
+	<br>
+	<div class="row">
+		<div>
+			<p class="show-result" id="show-result"></p>
+		</div>
+	</div>
 </div>
-<br>	
 <div id="map-canvas"></div>
 
 

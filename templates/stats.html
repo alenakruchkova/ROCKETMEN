@@ -4,6 +4,10 @@
 	<script src=
 		"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js">
 	</script>
+    <script src="/path/to/d3.min.js"></script>
+    <script src="/path/to/dist/d3-funnel.js"></script>
+    <link rel="stylesheet" type="text/css" href="../pykcharts.1.1.0.min.css">
+    <script src="../pykcharts.1.1.0.min.js"></script>
 {% endblock %}
 
 
@@ -11,69 +15,147 @@
 
 <!-- Human Flight statistics -->
 <br>
-<br>
-<div><p><b>SORT BY:</b></p></div>
 
-    <button id="decade">DECADE</button> 
-    <button id="nationality">NATIONALITY</button>
-    <button id="number">NUMBER OF FLIGHTS</button>
-    <button id="gender">GENDER</button>
-<br>
-<br>
-<div class="astro-chart">
-    <canvas id="donutChart"></canvas>
-    <div id="donutLegend" class="chart-legend"></div>
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-12 col-md-3 col-lg-3">
+            <div class="row"><h4>Astronauts by gender</h4></div>
+            <br>
+            <div class="row">
+                <div class="astro-chart">
+                    <canvas id="donutChartGender"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div id="donutLegendGender" class="chart-legend"></div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-3 col-lg-3">
+            <div class="row"><h4>Astronauts by decade</h4></div>
+            <br>
+            <div class="row">
+                <div class="astro-chart">
+                    <canvas id="donutChartDecade"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div id="donutLegendDecade" class="chart-legend"></div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-3 col-lg-3">
+            <div class="row"><h4>Astronauts by country</h4></div>
+            <br>
+            <div class="row">
+                <div class="astro-chart">
+                    <canvas id="donutChartNationalities"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div id="donutLegendNat" class="chart-legend"></div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-3 col-lg-3">
+            <div class="row"><h4>Astronauts by number of flights<h4></div>
+            <br>
+            <div class="row">
+                <div class="astro-chart">
+                    <canvas id="donutChartNumbers"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div id="donutLegendNumbers" class="chart-legend"></div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+
 
 <script>
 
-    function showMeMyDonut(data){
+    function showMeGender(data){
 
-        $('#donutChart').remove();
-        $('.astro-chart').prepend('<canvas id="donutChart"></canvas>');
 
         var options = { responsive: true };
-        var ctx_donut = $('#donutChart').get(0).getContext("2d");
+        var ctx_donut = $('#donutChartGender').get(0).getContext("2d");
 
         var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
 
-        $('#donutLegend').html(myDonutChart.generateLegend());
+        // $('#donutLegendGender').html(myDonutChart.generateLegend());
 
-	}
+    };
 
-    function getGenderChart(evt){
-        evt.preventDefault();
-        console.log("in get gender");
-        $.get('/get-gender-chart.json', showMeMyDonut);
-    }
+    function showMeDecade(data){
 
-     function getDecadeChart(evt){
-        evt.preventDefault();
-        console.log("in get by decade");
-        $.get('/get-decade-chart.json', showMeMyDonut);
-    }
+        var options = { responsive: true };
+        var ctx_donut = $('#donutChartDecade').get(0).getContext("2d");
 
-    function getNatChart(evt){
-        evt.preventDefault();
-        console.log("in get nat");
+        // var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
+        var myLineChart = new Chart(ctx_donut).Line(data, options);
 
-        $.get('/get-nat-chart.json', showMeMyDonut);
-    }
+        $('#donutLegendDecade').html(myLineChart.generateLegend());
 
-     function getNumFlightsChart(evt){
-        evt.preventDefault();
-        console.log("in get num flights");
+    };
 
-        $.get('/get-numflights-chart.json', showMeMyDonut);
-    }
+    function showMeNationalities(data){
 
-    
-    $('#gender').on('click', getGenderChart);
-    $('#decade').on('click', getDecadeChart);
-    $('#nationality').on('click', getNatChart);
-    $('#number').on('click', getNumFlightsChart);
-    
-  
+
+        var options = { responsive: true };
+        var ctx_donut = $('#donutChartNationalities').get(0).getContext("2d");
+
+        var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
+
+        // $('#donutLegendNat').html(myDonutChart.generateLegend());
+
+    };
+
+   // function showMeNationalities(data) {
+   //      var k = new PykCharts.other.pictograph({
+   //          selector: "#my_chart",
+   //          data: data
+
+   //          // optional,
+   //          // chart_width: 400,
+   //          // chart_height: 340
+   //      });
+   //      k.execute();
+   //  }
+
+   function showMeNumbers(data){
+
+        console.log(data)
+
+        var options = { responsive: true };
+        var ctx_donut = $('#donutChartNumbers').get(0).getContext("2d");
+
+        // var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
+        var myBarChart = new Chart(ctx_donut).Bar(data, options);
+
+        $('#donutLegendNumbers').html(myBarChart.generateLegend());
+
+        //nuevos colores
+        myBarChart.datasets[0].bars[0].fillColor = "#1b969e"; //bar 1
+        myBarChart.datasets[0].bars[1].fillColor = "#f75e24"; //bar 2
+        myBarChart.datasets[0].bars[2].fillColor = "#58d2d3"; //bar 3
+        myBarChart.datasets[0].bars[3].fillColor = "#fcd9a0"; //bar 4
+        myBarChart.datasets[0].bars[4].fillColor = "#a5f5f6"; //bar 5
+        myBarChart.datasets[0].bars[5].fillColor = "#fed65a"; //bar 6
+        myBarChart.datasets[0].bars[6].fillColor = "#0b3e41"; //bar 7
+        myBarChart.update();
+    };
+
+
+$.get("/get-gender-chart.json", showMeGender); 
+$.get('/get-decade-chart.json', showMeDecade);
+$.get('/get-nat-chart.json', showMeNationalities);
+$.get('/get-numflights-chart.json', showMeNumbers);
+
+
 
 </script>
 

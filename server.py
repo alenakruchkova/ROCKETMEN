@@ -79,6 +79,21 @@ def show_astronaut_info(astronaut_id):
                             days=days,
                             **astronaut.__dict__)
 
+# @app.route("/astronauts")
+# def show_astronaut_info(astronaut_id):
+#     """Show information about the astronaut"""
+
+#     #Query astronauts table on astronaut_id
+#     astronaut = Astronaut.query.filter(Astronaut.astronaut_id == astronaut_id).one()
+
+#     flag = look_up_flag(astronaut)
+#     days = current_flight_duration(astronaut)
+
+#     return render_template("home.html",
+#                             flag=flag,
+#                             days=days,
+#                             **astronaut.__dict__)
+
 
 @app.route('/iss')
 def iss_page():
@@ -130,14 +145,14 @@ def get_gender_chart():
         'astronauts': [
             {
                 "value": int(male_count),
-                "color": "#00bfff",
-                "highlight": "#4dd2ff",
+                "color": "#58d2d3",
+                "highlight": "#86dfdf",
                 "label": "Male"
             },
             {
                 "value": int(female_count),
-                "color": "#ff6699",
-                "highlight": "#ff99bb",
+                "color": "#f4719d",
+                "highlight": "#fab8ce",
                 "label": "Female"
             },
         ]
@@ -173,46 +188,64 @@ def get_decade_chart():
         else:
             sixties += 1
 
-    data_list_of_dicts = {
-        'astronauts': [
-            {
-                "value": int(sixties),
-                "color": "#ff0000",
-                "highlight": "#ff4d4d",
-                "label": "60's"
-            },
-            {
-                "value": int(seventies),
-                "color": "#ff751a",
-                "highlight": "#ffa366",
-                "label": "70's"
-            },
-            {
-                "value": int(eighties),
-                "color": "#ffff00",
-                "highlight": "#ffff4d",
-                "label": "80's"
-            },
-            {
-                "value": int(nineties),
-                "color": "#00ff00",
-                "highlight": "#4dff4d",
-                "label": "90's"
-            },
-            {
-                "value": int(twothounds),
-                "color": "#00bfff",
-                "highlight": "#4dd2ff",
-                "label": "2000's"
-            },
-            {
-                "value": int(twothousandtens),
-                "color": "#cc00ff",
-                "highlight": "#e066ff",
-                "label": "2010's"
-            },
-        ]
-    }
+            # data_list_of_dicts = {
+    #     'astronauts': [
+    #         {
+    #             "value": int(sixties),
+    #             "color": "#103c3c",
+    #             "highlight": "#258d8d",
+    #             "label": "60's"
+    #         },
+    #         {
+    #             "value": int(seventies),
+    #             "color": "#207979",
+    #             "highlight": "#36c9c9",
+    #             "label": "70's"
+    #         },
+    #         {
+    #             "value": int(eighties),
+    #             "color": "#30b5b5",
+    #             "highlight": "#5ed4d4",
+    #             "label": "80's"
+    #         },
+    #         {
+    #             "value": int(nineties),
+    #             "color": "#58d2d3",
+    #             "highlight": "#9ae4e4",
+    #             "label": "90's"
+    #         },
+    #         {
+    #             "value": int(twothounds),
+    #             "color": "#86dfdf",
+    #             "highlight": "#d7f4f4",
+    #             "label": "2000's"
+    #         },
+    #         {
+    #             "value": int(twothousandtens),
+    #             "color": "#c3efef",
+    #             "highlight": "#ebfafa",
+    #             "label": "2010's"
+    #         },
+    #     ]
+    # }
+
+        data_list_of_dicts = {
+            'labels': ["1960", "1970", "1980", "1990", "2000", "2010"],
+            'datasets': [
+                {
+                    "fillColor": "#a5f5f6",
+                    "strokeColor": "#1b969e",
+                    "pointColor": "#0b3e41",
+                    "pointStrokeColor": "#fff",
+                    "pointHighlightFill": "#fff",
+                    "pointHighlightStroke": "rgba(220,220,220,1)",
+                    "data": [int(sixties), int(seventies), int(eighties), int(nineties), int(twothounds), int(twothousandtens)]
+                }
+            ]
+        }
+
+
+
     return jsonify(data_list_of_dicts)
 
 
@@ -236,13 +269,31 @@ def get_nat_chart():
     nat_dict["Russian Federation"] += nat_dict["Soviet Union"]
     del nat_dict["Soviet Union"]
 
-    color = ["#ff0000", "#ff751a", "#ffff00", "#00ff00", "#00bfff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff"]
-    highlight = ["#ff4d4d", "#ffa366", "#ffff4d", "#4dff4d", "#4dd2ff", "#e066ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff", "#cc00ff"]
+    color = ["#1b969e","#f75e24", "#58d2d3","#fcd9a0", "#a5f5f6","#fed65a" ]
+    highlight = ["#25ceda","#fa916b","#86dfdf", "#fef5e6","#e8fcfd","#fee59a"]
+
+    image = ["../img/counter-1.png", "../img/counter-2.png", "../img/counter-3.png", "../img/counter-4.png", "../img/counter-5.png", "../img/counter-6.png"]
+
+    # list_of_dicts = [{ 
+    #         "name": "total",
+    #         "weight": 546,
+    #         "image": "../img/counter-total.png",
+    # }]
 
     list_of_dicts = []
 
     data_list_of_dicts = {
         'astronauts': list_of_dicts}
+
+    # i = 0
+    # for item in nat_dict:
+    #     list_of_dicts.append({
+    #             "name": str(item),
+    #             "weight": int(nat_dict[item]),
+    #             "image": str(image[i]),
+
+    #         })
+    #     i+=1
 
     i = 0
     for item in nat_dict:
@@ -252,6 +303,7 @@ def get_nat_chart():
                 "highlight": str(highlight[i]),
                 "label": str(item),
             })
+        i+=1
 
     return jsonify(data_list_of_dicts)
 
@@ -278,52 +330,66 @@ def get_num_flights_chart():
     six = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 6).count()
     seven = db.session.query(Astronaut).filter(Astronaut.num_completed_flights == 7).count()
 
+
     data_list_of_dicts = {
-        'astronauts': [
+        'labels': ["1", "2", "3", "4", "5", "6", "7"],
+        'datasets': [
             {
-                "value": int(one),
-                "color": "#ff0000",
-                "highlight": "#ff4d4d",
-                "label": "1 flight"
-            },
-            {
-                "value": int(two),
-                "color": "#ff751a",
-                "highlight": "#ffa366",
-                "label": "2 flights"
-            },
-            {
-                "value": int(three),
-                "color": "#ffff00",
-                "highlight": "#ffff4d",
-                "label": "3 flights"
-            },
-            {
-                "value": int(four),
-                "color": "#00ff00",
-                "highlight": "#4dff4d",
-                "label": "4 flights"
-            },
-            {
-                "value": int(five),
-                "color": "#00bfff",
-                "highlight": "#4dd2ff",
-                "label": "5 flights"
-            },
-            {
-                "value": int(six),
-                "color": "#cc00ff",
-                "highlight": "#e066ff",
-                "label": "6 flights"
-            },
-            {
-                "value": int(seven),
-                "color": "#ff6699",
-                "highlight": "#ff99bb",
-                "label": "7 flights"
-            },
+                "fillColor": "rgba(220,220,220,0.5)",
+                # "strokeColor": "rgba(220,220,220,0.8)",
+                # "highlightFill": "rgba(220,220,220,0.75)",
+                # "highlightStroke": "rgba(220,220,220,1)",
+                "data": [int(one), int(two), int(three), int(four), int(five), int(six), int(seven)]
+            }
         ]
     }
+
+    # data_list_of_dicts = {
+    #     'astronauts': [
+    #         {
+    #             "value": int(one),
+    #             "color": "#DFE5E5",
+    #             "highlight": "#ffffff",
+    #             "label": "1 flight"
+    #         },
+    #         {
+    #             "value": int(two),
+    #             "color": "#CDD6D6",
+    #             "highlight": "#D7DEDE",
+    #             "label": "2 flights"
+    #         },
+    #         {
+    #             "value": int(three),
+    #             "color": "#B1BFBF",
+    #             "highlight": "#C1CCCC",
+    #             "label": "3 flights"
+    #         },
+    #         {
+    #             "value": int(four),
+    #             "color": "#859B9B",
+    #             "highlight": "#9DAFAF",
+    #             "label": "4 flights"
+    #         },
+    #         {
+    #             "value": int(five),
+    #             "color": "#406363",
+    #             "highlight": "#668282",
+    #             "label": "5 flights"
+    #         },
+    #         {
+    #             "value": int(six),
+    #             "color": "#0D3030",
+    #             "highlight": "#103C3C",
+    #             "label": "6 flights"
+    #         },
+    #         {
+    #             "value": int(seven),
+    #             "color": "#081E1E",
+    #             "highlight": "#0A2626",
+    #             "label": "7 flights"
+    #         },
+    #     ]
+    # }
 
     return jsonify(data_list_of_dicts)
 
