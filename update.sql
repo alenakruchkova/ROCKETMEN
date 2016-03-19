@@ -1,3 +1,5 @@
+# UPDATE COUNTRIES WITH URL FOR COUNTRY FLAG
+
 UPDATE Countries SET flag='https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/220px-Flag_of_Russia.svg.png'
 	WHERE country_id='RU';
 
@@ -118,8 +120,18 @@ UPDATE Countries SET flag='https://upload.wikimedia.org/wikipedia/commons/thumb/
 UPDATE Countries SET flag='https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/218px-Flag_of_Italy.svg.png' 
 	WHERE country_id='IT';
 
+# INSERT USSR INTO COUNTRIES TABLE
+
 INSERT INTO Countries (country_id, name, flag)
 	VALUES ('SU', 'USSR','https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_the_Soviet_Union.svg/220px-Flag_of_the_Soviet_Union.svg.png');
+
+# UPDATE ASTRONAUTS TABLE WITH MISSING INFO
+
+UPDATE Astronauts SET gender='M' WHERE gender IS NULL;
+UPDATE Astronauts SET num_completed_flights=2 WHERE num_completed_flights IS NULL;
+UPDATE Astronauts SET country_id='US' WHERE country_id IS NULL;
+
+# UPDATE ASTRONAUT INFO
 
 UPDATE Astronauts SET dob='1964.02.21', status='Active', country_id='US', 
 						current_flight_start='2015.03.27', num_completed_flights=4, 
@@ -164,6 +176,3 @@ UPDATE Astronauts SET country_id='RU', current_flight_start='2015.12.15',
 						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/YuriMalenchenko.jpg/383px-YuriMalenchenko.jpg' 
 						WHERE name='Yuri Malenchenko';
 
-UPDATE Astronauts SET gender='M' WHERE gender IS NULL;
-UPDATE Astronauts SET num_completed_flights=2 WHERE num_completed_flights IS NULL;
-UPDATE Astronauts SET country_id='US' WHERE country_id IS NULL;

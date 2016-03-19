@@ -6,7 +6,6 @@ CREATE TABLE Countries (
 
 
 CREATE TABLE Astronauts(
-	-- astonaut_id INTEGER AUTO_INCREMENT PRIMARY KEY,
 	astronaut_id SERIAL PRIMARY KEY,
 	name VARCHAR(300) NOT NULL,
 	gender VARCHAR(1),

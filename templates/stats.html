@@ -80,51 +80,26 @@
 
     function showMeGender(data){
 
-
         var options = { responsive: true };
         var ctx_donut = $('#donutChartGender').get(0).getContext("2d");
-
         var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
-
-        // $('#donutLegendGender').html(myDonutChart.generateLegend());
-
     };
+
 
     function showMeDecade(data){
 
         var options = { responsive: true };
         var ctx_donut = $('#donutChartDecade').get(0).getContext("2d");
-
-        // var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
         var myLineChart = new Chart(ctx_donut).Line(data, options);
-
-        $('#donutLegendDecade').html(myLineChart.generateLegend());
 
     };
 
     function showMeNationalities(data){
 
-
         var options = { responsive: true };
         var ctx_donut = $('#donutChartNationalities').get(0).getContext("2d");
-
         var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
-
-        // $('#donutLegendNat').html(myDonutChart.generateLegend());
-
     };
-
-   // function showMeNationalities(data) {
-   //      var k = new PykCharts.other.pictograph({
-   //          selector: "#my_chart",
-   //          data: data
-
-   //          // optional,
-   //          // chart_width: 400,
-   //          // chart_height: 340
-   //      });
-   //      k.execute();
-   //  }
 
    function showMeNumbers(data){
 
@@ -132,13 +107,9 @@
 
         var options = { responsive: true };
         var ctx_donut = $('#donutChartNumbers').get(0).getContext("2d");
-
-        // var myDonutChart = new Chart(ctx_donut).Doughnut(data.astronauts, options);
         var myBarChart = new Chart(ctx_donut).Bar(data, options);
 
-        $('#donutLegendNumbers').html(myBarChart.generateLegend());
-
-        //nuevos colores
+        //new colors
         myBarChart.datasets[0].bars[0].fillColor = "#1b969e"; //bar 1
         myBarChart.datasets[0].bars[1].fillColor = "#f75e24"; //bar 2
         myBarChart.datasets[0].bars[2].fillColor = "#58d2d3"; //bar 3
