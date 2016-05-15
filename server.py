@@ -36,6 +36,11 @@ def get_seed_info():
 
     return render_template("index.html")
 
+@app.route('/about')
+def about_rocketmen():
+    """Info about project"""
+
+    return render_template("about.html")
 
 @app.route('/home')
 def index():
@@ -306,7 +311,8 @@ def iss_now_info():
 if __name__ == "__main__":
     # debug=True , since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = False
+    app.debug = True
+
 
     connect_to_db(app)
 

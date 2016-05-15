@@ -135,7 +135,7 @@ UPDATE Astronauts SET country_id='US' WHERE country_id IS NULL;
 
 UPDATE Astronauts SET dob='1964.02.21', status='Active', country_id='US', 
 						current_flight_start='2015.03.27', num_completed_flights=4, 
-						duration_completed_flights='180 days 01 h 49 min 26 sec',
+						duration_completed_flights='180 days 01 h',
 						num_evas=3, duration_evas='18 h 20 min', 
 						twitter='StationCDRKelly',
 						widget='702656916627935232',
@@ -144,7 +144,7 @@ UPDATE Astronauts SET dob='1964.02.21', status='Active', country_id='US',
 
 UPDATE Astronauts SET name='Mikhail Kornienko', dob='1960.04.15', status='Active', country_id='RU', 
 						current_flight_start='2015.03.27', num_completed_flights=1, 
-						duration_completed_flights='176 days 01 h 18 min 13 sec',
+						duration_completed_flights='176 days 01 h',
 						num_evas=2, duration_evas='12 h 17 min', 
 						photo='http://www.astronaut.ru/flights/foto/iss43/kornienko.jpg' 
 						WHERE name='Mikhail Korniyenko';
@@ -157,7 +157,7 @@ UPDATE Astronauts SET name='Timothy Peake',country_id='GB', current_flight_start
 						WHERE name='Tim Peake';
 
 UPDATE Astronauts SET country_id='US', current_flight_start='2015.12.15',
-						duration_completed_flights='58 days 02 h 50 min 15 sec',
+						duration_completed_flights='58 days 02 h',
 						num_evas=3, duration_evas='13 h 31 min',
 						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TimotyKorpav2.jpg/384px-TimotyKorpav2.jpg',
 						twitter='astro_tim',
@@ -171,8 +171,25 @@ UPDATE Astronauts SET country_id='RU', current_flight_start='2015.09.02',
 						WHERE name='Sergey Volkov';
 
 UPDATE Astronauts SET country_id='RU', current_flight_start='2015.12.15',
-						duration_completed_flights='641 days 11 h 11 min 22 sec',
+						duration_completed_flights='641 days 11 h',
 						num_evas=6, duration_evas='34 h 50 min',
 						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/YuriMalenchenko.jpg/383px-YuriMalenchenko.jpg' 
 						WHERE name='Yuri Malenchenko';
 
+UPDATE Astronauts SET name='Jeff Williams', current_flight_start='2016.03.18',
+						duration_completed_flights='361 days 23 h',
+						num_evas=3, duration_evas='19 h 9 min',
+						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Jeffrey_N._Williams_2009.jpg/338px-Jeffrey_N._Williams_2009.jpg',
+						twitter='Astro_Jeff',
+						widget='731908608359686144'
+						WHERE name='Jeffrey Williams';
+
+UPDATE Astronauts SET name='Alexey Ovchinin', current_flight_start='2016.03.18',
+						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Aleksey_Ovchinin.jpg/320px-Aleksey_Ovchinin.jpg'
+						WHERE name='Aleksey Ovchinin';
+
+UPDATE Astronauts SET current_flight_start='2016.03.18',
+						duration_completed_flights='159 days 8 h',
+						num_evas=3, duration_evas='16 h 39 min',
+						photo='https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Oleg_Skripochka.jpg/360px-Oleg_Skripochka.jpg'
+						WHERE name='Oleg Skripochka';

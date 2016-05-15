@@ -21,20 +21,37 @@
 </head>
 
 <body>
+
+<div class="example3">
+  <nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar3">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/about"><img style="max-height:45px" class="img-responsive" src="/static/img/logo.png" alt="ABOUT"></a>
+      </div>
+      <div id="navbar3">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="/home"><img style="max-height:45px" class="img-responsive" src="/static/img/astro_logo.png"></a></li>
+          <li><a href="/iss"><img style="max-height:45px" class="img-responsive" src="/static/img/iss_logo.png"></a></li>
+          <li><a href="/stats"><img style="max-height:40px" class="img-responsive" src="/static/img/stats_logo.png"></a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+    <!--/.container-fluid -->
+  </nav>
+</div>
+
 	<!-- Static navbar -->
 
-	
-	<div class="container-fluid" id="container">
-	  	<nav class="navbar navbar-default" id="navbar navbar-default">	
-	  		<div class="navbar" id="nav">
-	    		<ul class="nav navbar-nav" id="list">
-	        		<li id="home"><a href="/home"><img style="max-height:45px" class="img-responsive" src="/static/img/astro_logo.png"></a></li>
-	        		<li id="iss"><a href="/iss"><img style="max-height:45px" class="img-responsive" src="/static/img/iss_logo.png"></a></li>
-	        		<li id="stats"><a href="/stats"><img style="max-height:40px" class="img-responsive" src="/static/img/stats_logo.png"></a></li>
-	      		</ul>
-	    	</div>
-	  	</div>
-	</nav>
+
 
   	{% block content %}BODY CONTENT GOES HERE {% endblock %}
 
