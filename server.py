@@ -27,7 +27,7 @@ client = TwilioRestClient(account_sid, auth_token)
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "ABC")
 # Raises an error if undentified variable is used in Jinja2
 #  (otherwise Jinja fails scilently)
 app.jinja_env.undefined = StrictUndefined
@@ -317,10 +317,11 @@ if __name__ == "__main__":
     # debug=True , since it has to be True at the point
     # that we invoke the DebugToolbarExtension
     PORT = int(os.environ.get("PORT", 5000))
+    DEBUG = "NO_DEBUG" not in os.environ
 
 
     connect_to_db(app)
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-    app.run(debug=False, host="0.0.0.0", port=PORT)
+    app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
