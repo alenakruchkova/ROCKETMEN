@@ -18,6 +18,11 @@ import requests
 import os
 import sys
 
+from twilio.rest import TwilioRestClient
+import twilio.twiml
+
+client = TwilioRestClient(account_sid, auth_token)
+
 
 app = Flask(__name__)
 
@@ -311,11 +316,11 @@ def iss_now_info():
 if __name__ == "__main__":
     # debug=True , since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = True
+    PORT = int(os.environ.get("PORT", 5000))
 
 
     connect_to_db(app)
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-    app.run()
+    app.run(debug=False, host="0.0.0.0", port=PORT)
