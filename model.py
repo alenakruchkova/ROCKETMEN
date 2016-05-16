@@ -82,7 +82,7 @@ def connect_to_db(app):
 
     # Configure to use PstgreSQL database
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///rocketmendb'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jvzjbikaeienmy:W1G1X2U2IvhunMt19EDMYCJESl@ec2-50-19-236-35.compute-1.amazonaws.com:5432/d7954798ekebe1'
     db.app = app
     db.init_app(app)
 
