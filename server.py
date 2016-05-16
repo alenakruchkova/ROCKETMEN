@@ -24,7 +24,7 @@ import twilio.twiml
 client = TwilioRestClient(account_sid, auth_token)
 
 PORT = int(os.environ.get("PORT", 5000))
-DEBUG = "NO_DEBUG" not in os.environ
+
 
 app = Flask(__name__)
 
@@ -328,4 +328,4 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-    app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
+    app.run(debug=True, host="0.0.0.0", port=PORT)
