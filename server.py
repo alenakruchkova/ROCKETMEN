@@ -135,8 +135,10 @@ def get_stats_all_human_flights():
 def get_gender_chart():
     """Query database and generate data for gender chart"""
 
-    male_count = db.session.query(Astronaut).filter_by(gender='M').count()
-    female_count = db.session.query(Astronaut).filter_by(gender='F').count()
+    # male_count = db.session.query(Astronaut).filter_by(gender='M').count()
+    male_count = Astronaut.query.filter(Astronaut.gender == 'M').count()
+    # female_count = db.session.query(Astronaut).filter_by(gender='F').count()
+    female_count = Astronaut.query.filter(Astronaut.gender == 'F').count()
 
     data_list_of_dicts = {
         'astronauts': [
