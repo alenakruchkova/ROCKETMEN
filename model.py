@@ -1,5 +1,5 @@
 """Models and database functions for ROCKETMEN project."""
-
+import os
 from flask_sqlalchemy import SQLAlchemy
 
 # This is the connection to the PostgreSQL database; we're getting this through
@@ -8,8 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-DATABASE_URL = os.environ.get("postgres://raqlxkdembtcwd:4SA5Xnz2xFTSmr2QUoEEzYc1KC@ec2-54-243-249-149.compute-1.amazonaws.com:5432/d9e24q6imd5cnn",
-                              "postgresql:///rocketmendb")
+# DATABASE_URL = os.environ.get("postgres://raqlxkdembtcwd:4SA5Xnz2xFTSmr2QUoEEzYc1KC@ec2-54-243-249-149.compute-1.amazonaws.com:5432/d9e24q6imd5cnn",
+#                               "postgresql:///rocketmendb")
 
 
 ##############################################################################
