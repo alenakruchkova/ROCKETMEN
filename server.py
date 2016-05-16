@@ -137,6 +137,7 @@ def get_gender_chart():
 
     # male_count = db.session.query(Astronaut).filter_by(gender='M').count()
     male_count = Astronaut.query.filter(Astronaut.gender == 'M').count()
+    print male_count
     # female_count = db.session.query(Astronaut).filter_by(gender='F').count()
     female_count = Astronaut.query.filter(Astronaut.gender == 'F').count()
 
