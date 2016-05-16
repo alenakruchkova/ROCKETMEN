@@ -18,10 +18,6 @@ import requests
 import os
 import sys
 
-from twilio.rest import TwilioRestClient
-import twilio.twiml
-
-client = TwilioRestClient(account_sid, auth_token)
 
 PORT = int(os.environ.get("PORT", 5000))
 
