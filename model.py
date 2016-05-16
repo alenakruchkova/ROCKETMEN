@@ -8,8 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-DATABASE_URL = os.environ.get("DATABASE_URL",
-                              "postgresql:///rocketmendb")
+# DATABASE_URL = os.environ.get("DATABASE_URL",
+#                               "postgresql:///rocketmendb")
 
 
 ##############################################################################
