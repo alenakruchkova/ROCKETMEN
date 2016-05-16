@@ -28,6 +28,8 @@ DEBUG = "NO_DEBUG" not in os.environ
 # Required to use Flask sessions and the debug toolbar
 SECRET_KEY = "ABC"
 
+SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABC")
+
 app.secret_key = "ABC"
 # Raises an error if undentified variable is used in Jinja2
 #  (otherwise Jinja fails scilently)
