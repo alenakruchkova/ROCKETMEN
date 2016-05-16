@@ -23,6 +23,8 @@ PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)
 
+DEBUG = "NO_DEBUG" not in os.environ
+
 # Required to use Flask sessions and the debug toolbar
 SECRET_KEY = "ABC"
 SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABC")
@@ -323,4 +325,4 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-    app.run(debug=True, host="0.0.0.0", port=PORT)
+    app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
