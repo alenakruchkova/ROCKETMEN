@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     from server import app
 
-    DATABASE_URL = os.environ.get("postgres://hushfudlklkrvx:WCW5o2ghgIFyRcePcFXtKR40lA@ec2-54-235-86-183.compute-1.amazonaws.com:5432/dfjlb3omj30rhg",
+    DATABASE_URL = os.environ.get("postgres://jvzjbikaeienmy:W1G1X2U2IvhunMt19EDMYCJESl@ec2-50-19-236-35.compute-1.amazonaws.com:5432/d7954798ekebe1",
                               "postgresql:///rocketmendb")
     connect_to_db(app)
     print "Connected to DB."
