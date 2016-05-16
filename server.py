@@ -23,6 +23,8 @@ import twilio.twiml
 
 client = TwilioRestClient(account_sid, auth_token)
 
+PORT = int(os.environ.get("PORT", 5000))
+DEBUG = "NO_DEBUG" not in os.environ
 
 app = Flask(__name__)
 
@@ -316,9 +318,6 @@ def iss_now_info():
 if __name__ == "__main__":
     # debug=True , since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    PORT = int(os.environ.get("PORT", 5000))
-    DEBUG = "NO_DEBUG" not in os.environ
-
 
     connect_to_db(app)
 
