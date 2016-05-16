@@ -29,13 +29,18 @@ DEBUG = "NO_DEBUG" not in os.environ
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "ABC")
+SECRET_KEY = "ABC"
+SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABC")
+app.secret_key = "ABC"
 # Raises an error if undentified variable is used in Jinja2
 #  (otherwise Jinja fails scilently)
 app.jinja_env.undefined = StrictUndefined
 
 ######################################################################
 
+@app.route("/error")
+def error():
+    raise Exception("Error!")
 
 @app.route('/')
 def get_seed_info():
@@ -323,4 +328,4 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-    app.run(debug=True, host="0.0.0.0", port=PORT)
+    app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
