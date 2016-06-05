@@ -11,7 +11,7 @@ CREATE TABLE Astronauts(
 	gender VARCHAR(1),
 	dob VARCHAR(10),
 	status VARCHAR(300),
-	country_id VARCHAR(2) REFERENCES Countries,
+	country_id VARCHAR(10) REFERENCES Countries,
 	first_flight_start VARCHAR(100) NOT NULL,
 	second_flight_start VARCHAR(100),
 	third_flight_start VARCHAR(100),
@@ -31,7 +31,11 @@ CREATE TABLE Astronauts(
 	);
 
 
+CREATE TABLE Users(
+	user_id SERIAL PRIMARY KEY,
+	user_phone VARCHAR(15) NOT NULL
 
+);
 
 
 

@@ -39,7 +39,7 @@ class Astronaut(db.Model):
     dob = db.Column(db.String(10), nullable=True)
     status = db.Column(db.String(300), nullable=True)
 
-    country_id = db.Column(db.String(2),
+    country_id = db.Column(db.String(10),
                             db.ForeignKey("countries.country_id"),
                             nullable=True)
 
@@ -73,6 +73,14 @@ class Astronaut(db.Model):
         return "<Astronaut astronaut_id=%s name=%s>" % (
             self.astronaut_id, self.name)
 
+class User(db.Model):
+    """List of users who want to be notified about number of people in space"""
+
+    __tablename__ = "users"
+
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_phone = db.Column(db.String(15), nullable=False)
+
 
 ##############################################################################
 # Helper functions
@@ -82,7 +90,8 @@ def connect_to_db(app):
 
     # Configure to use PstgreSQL database
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jvzjbikaeienmy:W1G1X2U2IvhunMt19EDMYCJESl@ec2-50-19-236-35.compute-1.amazonaws.com:5432/d7954798ekebe1'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///rocketmendb'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jvzjbikaeienmy:W1G1X2U2IvhunMt19EDMYCJESl@ec2-50-19-236-35.compute-1.amazonaws.com:5432/d7954798ekebe1'
     db.app = app
     db.init_app(app)
 

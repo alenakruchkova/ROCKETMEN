@@ -10,21 +10,36 @@
 	<div class="row">
         <div class="col-xs-12 col-md-3 col-lg-3 col-md-offset-1 col-lg-offset-1">
         		<div class="row">
-	        		<div class="text-lg">
+	        		<div class="text-lg" style="display:flex;justify-content:center;align-items:center;" >
 	        		
 	      				{{ num_result }}
 	      			
 	      			</div>
 	      		</div>
-	      		<!-- <div class="row">
-					<form id="location-form">
-						<label for="field-location"></label>
-						<input type="text" name="address" id="field-location">
+
+				<div class="row">
+		
+						Would you like to be notified via text if the number of people in space changes?
+
+				</div>
+				<br>
+				<div class="row">
+					<form id="phone-form">
+						<label for="field-phone">Your Phone Number</label>
+						<input type="text" name="phone" id="field-phone" placeholder="+1 555 555 5555">
 						<input type="submit" id="submit-button">
 					</form>
-				</div> -->
-	     </div>
-	    <div class="col-xs-12 col-md-6 col-lg-6">
+				</div>
+				<br>
+				<div class="row">
+					<div>
+						<p class="show-result" id="show-result"></p>
+					</div>
+				</div>
+		</div>
+	
+		
+	    <div class="col-xs-12 col-md-6 col-lg-6 col-md-offset-1 col-lg-offset-1">
   			<div class="text-md">
   				<br>
 	        	<ul>
@@ -45,4 +60,23 @@
     </div>
 </div>
 
+
+<script>
+	function showResult(result){
+		console.log(result.message)
+		$('#show-result').text(result.message);
+		console.log(result.message);
+	}
+
+	function checkNumber(evt){
+		evt.preventDefault();
+
+		var phone = {
+			"phone": $("#field-phone").val()
+		};
+		console.log(phone);
+		$.post('/user_phone', phone, showResult);
+	}
+	$('#submit-button').on('click', checkNumber);
+</script>
 {% endblock %}

@@ -4,13 +4,20 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, session, jsonify, json
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Astronaut, Country
+from model import connect_to_db, db, Astronaut, Country, User
 from helper import get_people_in_space_info, lookup_id_from_name, current_flight_duration, look_up_flag, get_current_iss_location
 from helper import get_lat_lng, get_next_iss_pass_for_lat_lng
 
 from sqlalchemy import func
 
 import random
+
+from twilio.rest import TwilioRestClient
+import twilio.twiml
+
+account_sid = "ACdc665c6ba2c553c3cbc11d7eca8b69c7"
+auth_token = "81c9eea84beb28630b32c878108d811b"
+client = TwilioRestClient(account_sid, auth_token)
 
 from googlemaps import Client
 from datetime import datetime
@@ -74,6 +81,44 @@ def index():
     return render_template("home.html",
                             num_result=num_result,
                             name_id=name_id)
+
+
+@app.route('/user_phone', methods=['GET', 'POST'])
+def check_phone():
+    """Check if valid phone number.
+
+        If so see if phone is in db. If not add phone to db and text user."""
+
+    phone = request.form.get("phone")
+    user_phone = phone.replace(" ", "")
+
+    if user_phone.startswith("+") and user_phone[1:].isdigit() and len(user_phone) == 12:
+        if db.session.query(User).filter(User.user_phone==user_phone).count() > 0:
+            # user exists
+            result = {'message': "This number is already registered to receive notifications."}
+        else:
+            user = User(user_phone=user_phone)
+            result = {'message': "Thank you for signing up to receive notifications."}
+
+            #text user
+            client.messages.create(
+                to=user_phone,
+                from_="+12155159308",
+                body="Thanks for signing up!",
+                media_url='http://i.imgur.com/PbDsdhj.jpg?1')
+
+            # add used to db
+            # Add to the session
+            db.session.add(user)
+
+        # Commit
+        db.session.commit()
+
+    else:
+        result = {'message': "This is not a valid number. Please try again."}
+
+
+    return jsonify(result)
 
 
 @app.route("/astronauts/<int:astronaut_id>")

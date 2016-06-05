@@ -54,7 +54,7 @@ def get_name_date(all_rows):
 def load_astronauts():
     """Load information from list_of_lists into database"""
 
-    print "Astronauts"
+    print "Start loading Astronauts"
 
     scrape_result = get_html_from_wiki()
     list_of_lists = get_name_date(scrape_result)
@@ -70,11 +70,13 @@ def load_astronauts():
     # Commit
     db.session.commit()
 
+    print "Astronauts"
+
 
 def load_astros_info():
     """Load astros info from astros.csv into database."""
 
-    print "Astros Info"
+    print "Start loading Astros Info"
 
     # Read astros.csv file
     for row in open("seed_data/astros.csv"):
@@ -104,15 +106,17 @@ def load_astros_info():
     # Commit
     db.session.commit()
 
+    print "Astros Info"
+
 ##############################################################################
 
 def load_countries():
     """Load countries from output.txt into database."""
 
-    print "Countries"
+    print "Start loading Countries"
 
     # Delete all rows in table, so if we need to run this a second time,
-    # we won't be trying to add duplicate users
+    # we won't be trying to add duplicate items
     Country.query.delete()
 
     # Read file and insert data
@@ -135,6 +139,8 @@ def load_countries():
     # Commit
     db.session.commit()
 
+    print "Countries"
+
 
 #####################################################################
 if __name__ == "__main__":
@@ -144,9 +150,9 @@ if __name__ == "__main__":
     db.create_all()
 
     # Import data
-
     load_countries()
 
     load_astronauts()
 
     load_astros_info()
+
